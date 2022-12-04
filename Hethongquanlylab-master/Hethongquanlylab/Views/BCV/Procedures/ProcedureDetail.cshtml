@@ -1,0 +1,14 @@
+﻿@model ItemDetail<Procedure>
+
+@{
+    if (Model.FieldVar == "BCV")
+    {
+        Layout = "~/Views/Shared/Layout/Procedures/_Layout_ProcedureDetail.cshtml";
+    }
+
+    else
+    {
+        Layout = "~/Views/Shared/Layout/Procedures/_Layout_ProcedureDetail_Approval.cshtml";
+    }
+
+}

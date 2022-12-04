@@ -1,0 +1,500 @@
+﻿html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: Arial;
+}
+
+a {
+    text-decoration: none;
+    color: #00a;
+}
+
+.header {
+    display: flex;
+    position: fixed;
+    z-index: 10;
+    /* margin-left: -70px; */
+    /* margin-top: -8px; */
+    background-color: #1e2d3b;
+    box-shadow: 5px -5px 8px 10px #888888;
+    color: #212121;
+    height: 100px;
+    top: 0;
+}
+
+    .header .header-logo h3 {
+        font-size: 22px;
+        font-weight: 700;
+        margin: auto;
+    }
+
+.header-logo {
+    display: flex;
+    width: 350px;
+    background-color: #edcd1f;
+}
+
+.header .logo {
+    height: 100px;
+    /* margin-left: 70px; */
+}
+
+.header-list {
+    display: flex;
+    width: calc(100vw - 350px);
+    flex-direction: row-reverse;
+    padding-right: 65px;
+    text-align: center;
+    line-height: 70px;
+    justify-content: space-around;
+}
+
+.header-item {
+    margin: 15px;
+    font-size: 18px;
+    font-weight: 500;
+    width: 15vw;
+    color: #fff;
+}
+
+    .header-item:hover {
+        color: #edcd1f;
+    }
+
+.user {
+    position: relative;
+    font-size: 32px;
+    color: #fff;
+    margin: 13px 23px 0 87px;
+    cursor: pointer;
+}
+
+    .user ul li a {
+        color: #fff;
+        font-size: 18px;
+    }
+
+    .user .user-info-item a {
+        width: 100%;
+        display: block;
+        padding: 8px;
+    }
+
+    .user:hover .user-info {
+        display: block;
+    }
+
+.user-info {
+    position: absolute;
+    background-color: #ccc;
+    border-radius: 10px;
+    top: -58px;
+    right: 68px;
+    display: none;
+}
+
+.user .user-info {
+    right: -6vw;
+    top: 75px;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    background-color: rgba(0, 0, 0, 0.6);
+    list-style-type: none;
+    border-radius: 8px;
+    width: 14vw;
+    box-shadow: 0 0 5px 4px rgba(0, 0, 0, 0.3);
+    display: none;
+}
+
+.user-info-item {
+    list-style-type: none;
+}
+
+.user .user-info-item a {
+    width: 100%;
+    display: block;
+    padding: 8px;
+    height: 59px;
+    line-height: 49px;
+}
+
+.user-info-item:hover, .user-info-item a:hover {
+    background-color: #edcd1f;
+    color: #fff;
+}
+
+#footer {
+    background-color: #181821;
+    color: #a9b3bb;
+    display: flex;
+    justify-content: space-around;
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+    #footer a {
+        color: #a9b3bb;
+    }
+
+.info {
+    margin-top: 45px;
+}
+
+.information {
+    text-align: center;
+    margin-top: 30px;
+    width: 33vw;
+}
+
+.information-title {
+    color: #fff;
+    margin: auto;
+    margin-left: 18px;
+}
+
+.information-text {
+    margin-top: 30px;
+}
+
+#footer .footer-text {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+}
+
+#footer .information img {
+    height: 75px;
+    margin-right: 14px;
+    border-radius: 6px;
+    margin: auto 0;
+}
+
+#footer .img-logo {
+    display: flex;
+    margin-left: 40px;
+}
+
+.info-list {
+    padding: 0;
+}
+
+.info-item {
+    display: flex;
+}
+.info-item i {
+    margin-top: auto;
+    margin-bottom: auto;
+    padding: 0 18px;
+}
+
+.show {
+    display: block;
+}
+
+
+/* phần css slide */
+* {
+    box-sizing: border-box
+}
+
+/* phần giới thiệu chung */
+.gioiThieu {
+    text-align: center;
+}
+
+.title-gioithieu {
+    font-size: 48px;
+    font-weight: 600;
+}
+
+.title-sp-gioithieu {
+    font-size: 18px;
+}
+
+.container-gioithieu {
+    display: flex;
+    margin: auto;
+    width: 85vw;
+    justify-content: space-between;
+}
+
+.container-gioithieu-list {
+    width: 35vw;
+}
+
+.container-gioithieu-item {
+    text-align: initial;
+}
+
+.container-content-list {
+}
+
+.container-content-item {
+    margin: 14px;
+}
+
+/* phần quy tấc ứng xử  */
+.title {
+    width: 80vw;
+    text-align: center;
+    margin: 150px auto 90px;
+    line-height: 50px;
+    background-color: rgb(241, 249, 253);
+    font-size: 48px;
+    font-weight: 600;
+    border-bottom: 4px solid #edcd1f;
+}
+
+.quyTac-wrapper {
+    padding: 80px 0;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+}
+
+.splide__slide {
+    height: 500px !important;
+}
+
+.quyTac {
+    text-align: center;
+    width: 21vw;
+}
+
+.quyTac-img {
+}
+
+.quyTac-title {
+    color: #ff3c3c;
+    font-size: 30px;
+}
+
+.quyTac-text {
+    text-align: center;
+    margin: 0 10px;
+    font-size: 22px;
+    /* text-shadow: 5px 2px 5px grey; */
+    font-weight: bold;
+    height: 150px;
+}
+
+.gioiThieu-mid {
+    display: flex;
+    flex-direction: row-reverse;
+    margin: 50px;
+}
+
+.gioiThieu-text {
+    width: 85vw;
+    margin: auto;
+    margin-top: 0;
+    text-align: left;
+}
+
+.gioiThieu-text-title {
+    text-align: center;
+    font-size: 48px;
+    font-weight: 700;
+    border-bottom: 4px solid #edcd1f;
+    padding-bottom: 10px;
+    margin: 0 46px 0 46px;
+}
+
+.splide {
+    width: 90vw;
+    margin: auto;
+}
+
+.space {
+    background-image: url(/img/labchung.jpg);
+    background-size: 100% auto;
+    width: 60vw;
+    background-repeat: no-repeat;
+    border-radius: 15px;
+    margin-right: 35px;
+}
+
+.dataLab {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    background-color: #edcd1f;
+    color: #3d5975;
+    font-size: 54px;
+    font-weight: 700;
+    text-align: center;
+    margin-top: 30px;
+}
+
+.wrapper-data {
+    display: flex;
+    width: 85vw;
+}
+
+.data {
+    width: 25%;
+    border-right: 3px solid #fff;
+    margin: 22px 0;
+}
+
+    .data:last-child {
+        border: 0;
+    }
+
+.data-year {
+}
+
+.data-text {
+    font-size: 22px;
+    font-weight: 500;
+    margin-top: -26px;
+}
+
+.space2 {
+    background-image: url(/img/20220430_081003.jpg);
+    background-size: 100% auto;
+    height: 800px;
+}
+/* giá trị cốt lõi */
+.giaTri-wrapper {
+    margin-top: 80px;
+    display: flex;
+    flex-wrap: wrap;
+    text-align: center;
+    justify-content: center;
+}
+
+.giaTri {
+    display: flex;
+    border: 1px solid;
+    padding: 10px;
+    box-shadow: 5px 10px 8px 10px #888888;
+    margin: 45px;
+    border-radius: 10px;
+    transition: width 2s;
+}
+
+    .giaTri:hover {
+        background-color: rgba(184, 184, 11, 0.6);
+        color: rgb(255, 255, 255);
+    }
+
+.giaTri-img {
+}
+
+.giaTri-content {
+}
+
+.giaTri-title {
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #ff5050;
+}
+
+.giatri-text {
+    width: 196px;
+    text-align: center;
+    margin: 0 10px;
+    font-weight: 600;
+}
+
+.doiTac {
+    background-color: #f7f7f7;
+    padding: 128px 0;
+}
+
+    .doiTac > p {
+        font-size: 60px;
+        font-weight: 700;
+        color: rgb(30 45 59);
+        text-align: center;
+        padding: 40px 0;
+        padding-bottom: 8px;
+        margin: 0 500px;
+        border-bottom: 4px solid #edcd1f;
+    }
+
+.doiTac-list {
+    width: 85vw;
+    display: flex;
+    justify-content: space-around;
+    margin: auto;
+}
+
+.doiTac-item {
+    text-align: center;
+    display: flex;
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 60px;
+    padding-bottom: 60px;
+}
+
+.quaTrinh {
+    text-align: center;
+    text-align: center;
+    background-color: #e1eaf7;
+    padding-bottom: 80px;
+}
+
+.wrapper-quaTrinh {
+    display: flex;
+    justify-content: space-around;
+}
+
+.title-sp-quaTrinh {
+    font-size: 22px;
+    line-height: 120px;
+    font-weight: 600;
+    color: #c3c343;
+}
+
+.content-quaTrinh {
+    display: flex;
+    padding: 13px 26px;
+    background-color: #cfcfca;
+    border-radius: 20px;
+}
+
+.year-quaTrinh {
+    font-size: 30px;
+    font-weight: 600;
+    padding-right: 27px;
+    border-right: 2px solid #fff;
+}
+
+.content-list-quaTrinh {
+    padding-left: 24px;
+}
+
+.content-item-title-quaTrinh {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.content-item-quaTrinh {
+}
+/* phần tin tức */
+.news {
+    width: 85vw;
+    margin: auto;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}
+
+.title-news {
+    font-size: 48px;
+    font-weight: 600;
+    width: 85vw;
+    margin: auto;
+    margin-top: 50px;
+    padding-left: 30px;
+    color: rgb(30 45 59);
+    border-bottom: 4px solid rgb(237 205 31);
+}

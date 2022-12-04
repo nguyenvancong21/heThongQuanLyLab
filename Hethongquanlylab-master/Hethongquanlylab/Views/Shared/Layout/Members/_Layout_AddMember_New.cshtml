@@ -1,0 +1,304 @@
+﻿@model List<String>
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @section Buttons{
+        @if (Model[0] == "Ban Nhân Sự")
+        {
+            <a asp-action="Account" class="header-item">Tài khoản</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if (Model[0] == "Ban Đào Tạo")
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            <a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if ((Model[0] == "Ban Truyền Thông") || (Model[0] == "Ban Sự Kiện"))
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            //<a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if ((Model[0] == "Ban Điều Hành") || (Model[0] == "Ban Cố Vấn") || (Model[0] == "Nhà Sáng Lập") || (Model[0]== "Nhà Đồng Sáng Lập"))
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if (Model[0].Contains("PT"))
+        {
+            <a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else
+        {
+            <a class="header-item"></a>
+            //<a asp-action="Notification" class="header-item">Thông báo</a>
+            //<a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            //<a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+
+    }
+
+    @section Login{
+        <li class="user-info-item">
+            <a asp-controller="Login" asp-action="ChangetoChangePassword">Đổi mật khẩu</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Home" asp-action="Index">Đăng xuất</a>
+        </li>
+    }
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="~/css/nhanSu&DuAn.css">
+</head>
+<body>
+    @RenderBody()
+    <div class="wrap-back" style="display:flex;">
+        <a asp-action="Index"><h2 class="backMainPage"> Trang Chủ</h2></a>
+        <p>/</p>
+        <a asp-action="Member"><h2 style="padding-left: 10px;" class="backMainPage"> Nhân Sự</h2></a>
+        <p>/</p>
+        <a asp-action="AddMember_New"><h2 style="padding-left: 10px;" class="backMainPage"> Thêm nhân sự</h2></a>
+    </div>
+
+    <style>
+        .form-frame {
+            display: flex;
+            border-radius: 2px !important;
+            padding: 30px 30px 40px;
+            background-color: #fff;
+        }
+
+        .nutan {
+            height: 52px;
+            width: 132px;
+            background-color: #edcd1f;
+            border-radius: 12px;
+        }
+
+        .form-group {
+            display: flex;
+            border-bottom: 1px solid #fff;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            word-break: break-all;
+        }
+
+        .form-control {
+            height: 30px;
+        }
+    </style>
+
+    <div style="min-width: 60%; height: 100%; top: 120px;" class="form-frame">
+        <div class="avt" style="text-align: center; width: 45%; margin-right: 50px; border: 1px #ffd800 solid;">
+            <div style="padding-top: 20px; padding-bottom: 30px; width: 85%; height: auto; margin: auto;">
+                <img style="border: 1px #ffd800 solid; width: 100%; height: 100%;" src="~/img/avt/@Model[1]" alt="">
+            </div>
+
+            <form asp-action="UploadAvt" method="post" enctype="multipart/form-data">
+                <input name="file" type="file" required />
+                <button type="submit" class="nutan">Upload ảnh</button>
+            </form>
+        </div>
+
+        <style>
+            table tr:nth-child(odd) {
+                background-color: white;
+            }
+
+            table tr:nth-child(even) {
+                background-color: white;
+            }
+
+            table tr:nth-child(1) {
+                background-color: white;
+            }
+
+            table td:nth-child(odd) {
+                color: #edcd1f;
+                font-size: 20px;
+            }
+
+            table tr td {
+                height: 20px;
+            }
+        </style>
+
+        <div style="width: 60%;">
+            <form asp-action="AddMember_New" method="post">
+                <table style="width: 100%;">
+                    <tr style="background-color: #373F51;">
+                        <td style="text-align: center; color: #fff;"> THÔNG TIN THÀNH VIÊN</td>
+                    </tr>
+                </table>
+                <table style="width: 100%;">
+                    <tr>
+                        <td colspan="4">
+                            @if (Model[2] == "1")
+                            {
+                                <a>LabID này đã tồn tại</a>
+                            }
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="25%">
+                            LabID
+                        </td>
+                        <td colspan="3">
+                            <input name="LabID" maxlength="8" type="text" class="form-control" placeholder="LabID" id="name" value="" style="width: 100%;" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Tên thành viên
+                        </td>
+                        <td colspan="3">
+                            <input name="Name" type="text" class="form-control" placeholder="Họ và tên" id="name" value="" style="width: 100%;" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Giới tính
+                        </td>
+                        <td width="25%">
+                            <select name="Sex" class="form-control">
+                                <option>Nam</option>
+                                <option>Nữ</option>
+                                <option>Khác</option>
+                            </select>
+                        </td>
+
+                        <td>
+                            Thế hệ
+                        </td>
+                        <td>
+                            <input name="Gen" type="text" class="form-control" placeholder="Thế hệ" id="gen" style="width: 100%;" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Ngày sinh
+                        </td>
+                        <td colspan="3">
+                            <input name="Birthday" type="date" id="date" class="form-control" style="width: 40%;" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Chuyên ngành
+                        </td>
+                        <td colspan="3">
+                            <input name="Specicalization" type="text" class="form-control" placeholder="Chuyên ngành" id="specialization" value="" style="width: 100%;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Trường
+                        </td>
+                        <td colspan="3">
+                            <input name="University" type="text" class="form-control" placeholder="Trường đang học" id="university" value="" style="width: 100%;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Số điện thoại
+                        </td>
+                        <td colspan="3">
+                            <input name="Phone" type="text" class="form-control" placeholder="Số điện thoại" id="phone" value="" style="width: 100%;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Email
+                        </td>
+                        <td colspan="3">
+                            <input name="Email" type="email" class="form-control" placeholder="Email" id="email" value="" style="width: 100%;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Địa chỉ
+                        </td>
+                        <td colspan="3">
+                            <input name="Address" type="text" class="form-control" placeholder="Địa chỉ" id="address" value="" style="width: 100%;">
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            Đơn vị
+                        </td>
+                        <td colspan="3">
+                            <input name="Unit" type="text" class="form-control" placeholder="Đơn Vị" id="unit" value="" style="width: 100%;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Chức vụ
+                        </td>
+                        <td colspan="3">
+                            <input name="Position" type="text" class="form-control" placeholder="Chức Vụ" id="position" value="" style="width: 100%;">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Leader Team?
+                        </td>
+                        <td>
+                            <input name="IsLT" type="checkbox" id="isLT" value="true" style="width: 30px; height: 30px;">
+                        </td>
+                        <td>
+                            Đã qua PTBT?
+                        </td>
+                        <td>
+                            <input name="IsPassPTBT" type="checkbox" id="isPassPTBT" value="true" style="width: 30px; height: 30px;">
+                        </td>
+                    </tr>
+
+                    <script>
+                        $(document).on("click", "[type='checkbox']", function (e) {
+                            if (this.checked) {
+                                $(this).attr("value", "true");
+                            } else {
+                                $(this).attr("value", "false");
+                            }
+                        });
+                    </script>
+                </table>
+                <div>
+                    <div style="margin-top: 5%;">
+                        <button type="submit" style="left: 0%;" class="nutan">+ Lưu</button>
+                        <button type="button" style="float: right !important;" onclick="location.href='@Url.Action("Member")'" class="nutan">Quay Lại</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>

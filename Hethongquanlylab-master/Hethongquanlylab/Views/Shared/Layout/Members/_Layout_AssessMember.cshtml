@@ -1,0 +1,141 @@
+﻿@model ItemDetail<Member>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @section Buttons{
+        @if (Model.SessionVar == "Ban Nhân Sự")
+        {
+            <a asp-action="Account" class="header-item">Tài khoản</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if (Model.SessionVar == "Ban Đào Tạo")
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            <a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if ((Model.SessionVar == "Ban Truyền Thông") || (Model.SessionVar == "Ban Sự Kiện"))
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            //<a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if ((Model.SessionVar == "Ban Điều Hành") || (Model.SessionVar == "Ban Cố Vấn") || (Model.SessionVar == "Nhà Sáng Lập") || (Model.SessionVar == "Nhà Đồng Sáng Lập"))
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if (Model.SessionVar.Contains("PT"))
+        {
+            <a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else
+        {
+            <a class="header-item"></a>
+            //<a asp-action="Notification" class="header-item">Thông báo</a>
+            //<a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            //<a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+    }
+
+    @section Login{
+        <li class="user-info-item">
+            <a target="_blank" href="@Model.Link[1]">Lịch làm việc</a>
+        </li>
+        <li class="user-info-item">
+            <a target="_blank" href="@Model.Link[2]">Báo lỗi</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Login" asp-action="ChangetoChangePassword">Đổi mật khẩu</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Home" asp-action="Index">Đăng xuất</a>
+        </li>
+    }
+}
+
+
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/nhanSu&DuAn.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jodit/3.20.2/jodit.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jodit/3.20.2/jodit.min.js"></script>
+</head>
+<body>
+    @RenderBody()
+    <div class="wrap-back" style="display:flex;">
+        <a asp-action="Index"><h2 class="backMainPage"> Trang Chủ</h2></a>
+        <p>/</p>
+        <a asp-action="Member"><h2 style="padding-left: 10px;" class="backMainPage"> Nhân sự</h2></a>
+        <p>/</p>
+        <a asp-action="AssessMember"><h2 style="padding-left: 10px;" class="backMainPage"> Đánh giá thành viên</h2></a>
+    </div>
+    <form asp-action="AssessMember" method="post" id="form-addnotification">
+        <div class="wrap-themDuAn">
+            <label for="" style="display: flex;">
+                <strong style="font-size:20px;">Thành viên: @Model.Item.Name </strong>
+                <input type="hidden" name="Key" value="@Model.Item.Key"/>
+            </label>
+
+
+            <table style="margin-top: 10px;"><tr><td style="font-size: 20px; font-weight: bold;">Nội dung đánh giá</td></tr></table>
+            <label for="">
+                <textarea style="width: 1030px; margin: 12px 0; min-height: 500px;" name="Content" id="content" cols="30" rows="10" required>@Html.Raw(Model.Item.Assessment)</textarea>
+                <script>
+                    const editor = Jodit.make('#content', { height: 300 })
+                </script>
+            </label>
+
+
+
+            <div style="width: inherit; margin-top: 10px;">
+                <div style="float: right;">
+                    <button style="width: 200px;" type="button" class="add-nhanSu" onclick="confirm()">
+                        <i class="fa-solid fa-plus"></i>
+                        Gửi đánh giá
+                    </button>
+                </div>
+
+            </div>
+        </div>
+        <script>
+            function confirm() {
+                if (document.getElementById('content').value.length > 0) {
+                    document.forms[0].submit();
+                }
+                else {
+                    alert("Chưa nhập nội dung thông báo!")
+                }
+            }
+        </script>
+    </form>
+    <script src="./js/dataNhanSu.js"></script>
+    <script src="./js/dataDuAn.js"></script>
+    <script>
+        const editor = Jodit.make('#content');
+    </script>
+
+</body>
+</html>

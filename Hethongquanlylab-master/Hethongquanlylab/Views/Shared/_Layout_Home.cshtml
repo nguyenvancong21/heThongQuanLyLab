@@ -1,0 +1,473 @@
+﻿@model ItemDisplay<Notification>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/img/logo_icon.png" rel="shortcut icon" type="image/x-icon" />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <link rel="stylesheet" href="~/css/layout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@@splidejs/splide@4.0.7/dist/js/splide.min.js"></script>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <script src="https://www.w3schools.com/lib/w3.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/@@splidejs/splide@4.0.7/dist/css/splide-core.min.css,npm/@@splidejs/splide@4.0.7/dist/css/splide.min.css">
+    <title>LAB THẦY SINH</title>
+</head>
+<body>
+    <div id="header" class="header">
+        <div class="header-logo">
+            <img src="~/img/logo_lab.jpg" alt="" class="logo">
+            <h3 style="text-align: center; font-size: 20px;">
+                <p>LAB THẦY SINH</p>
+            </h3>
+        </div>
+        <div class="header-list">
+            <div class="user">
+                <i class="fa-solid fa-user"></i>
+                <ul class="user-info">
+                    @RenderSection("Login")
+                </ul>
+            </div>
+            @RenderSection("Buttons")
+        </div>
+    </div>
+    <div id="home" class="w3-content" style="margin-top: 120px;">
+
+        <!-- Slides -->
+        <img class="slides" src="./img/slide1.jpg" style="width:100%;border-radius: 20px;">
+        <img class="slides" src="./img/slide2.jpg" style="width: 100%; border-radius: 20px;">
+        <img class="slides" src="./img/slide3.jpg" style="width: 100%; border-radius: 20px;">
+        <img class="slides" src="./img/slide4.jpg" style="width: 100%; border-radius: 20px;">
+        <script>
+            w3.slideshow(".slides", 1500);
+        </script>
+
+        <!-- End Content -->
+    </div>
+    <!-- tin tức -->
+
+    <div id="tinTuc" style="">
+        <p class="title-news">Tin tức</p>
+        <div style="display: flex; width: 85vw; margin: auto;">
+            <div style="width: 20%">
+                <p style=" border-bottom: 2px solid #ccc; color: #d13636; font-size: 26px; font-weight: 600; text-align: center;" class="">Tin tức đối tác</p>
+            </div>
+
+            <div style="width: 60%; margin: 0 3%;">
+                <p style=" border-bottom: 2px solid #ccc; color: #d13636; font-size: 26px; font-weight: 600; text-align: center;" class="">Tin tức mới nhất</p>
+
+                <table class="" style="display: block; height: 100vh; overflow-y:scroll;">
+                    <tbody>
+                        <style>
+                            .news_title:hover {
+                                color: #800;
+                                text-decoration: underline;
+                            }
+                        </style>
+
+                        @foreach (var item in Model.Items)
+                        {
+            <tr style="background-color: white">
+                <td width="115px" height="115px">
+                    <img src="~/img/notifications/logo_lab.jpg" alt="" style="width: 115px; margin-bottom: -4px; margin-right:-1px;">
+                </td>
+                <td>
+                    <a asp-action="NotificationDetail" asp-route-id="@item.ID" style="font-size: 24px; font-weight: bold; padding-left: 10px; display:block; color: #202020" class="news_title"> @item.Title</a>
+
+                    <p style="font-size: 18px; font-weight: 200; padding-left: 10px; display: inline-block" class="backMainPage">Ngày đăng: @item.Date bởi</p>
+                    <p style="font-size: 18px; font-weight: 200; text-align:left; display: inline-block; font-style: italic;" class="backMainPage">@item.Unit</p>
+
+                </td>
+            </tr>
+}
+
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="width: 20%;">
+                <table class="" style="">
+                    <p style=" border-bottom: 2px solid #ccc; color: #d13636; font-size: 26px; font-weight: 600; text-align: center;" class="">Tin tức hot</p>
+                    <tbody>
+                        <style>
+                            .news_title:hover {
+                                color: #800;
+                                text-decoration: underline;
+                            }
+                        </style>
+                        <tr style="background-color: white">
+                            @*<td width="115px" height="115px">
+                        <img src="~/img/notifications/logo_lab.jpg" alt="" style="width: 115px; margin-bottom: -4px; margin-right:-1px;">
+                    </td>*@
+                            <td>
+                                <a asp-action="NotificationDetail" asp-route-id="@Model.Items[1].ID" style="font-size: 24px; font-weight: bold; padding-left: 10px; display:block; color: #202020" class="news_title">@Model.Items[1].Title</a>
+
+                                <p style="font-size: 18px; font-weight: 200;  display: inline-block" class="backMainPage">Ngày đăng: @Model.Items[1].Date bởi</p>
+                                <p style="font-size: 18px; font-weight: 200; text-align:left; display: inline-block; font-style: italic;" class="backMainPage">@Model.Items[1].Unit</p>
+
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+                <table class="" style="">
+                    <p style=" border-bottom: 2px solid #ccc; color: #d13636; font-size: 26px; font-weight: 600; text-align: center;">Tin tức xem nhiều</p>
+                    <tbody>
+                        <style>
+                            .news_title:hover {
+                                color: #800;
+                                text-decoration: underline;
+                            }
+                        </style>
+                        <tr style="background-color: white">
+                            @*<td width="115px" height="115px">
+                        <img src="~/img/notifications/logo_lab.jpg" alt="" style="width: 115px; margin-bottom: -4px; margin-right:-1px;">
+                    </td>*@
+                            <td>
+                                <a asp-action="NotificationDetail" asp-route-id="@Model.Items[0].ID" style="font-size: 24px; font-weight: bold; padding-left: 10px; display:block; color: #202020" class="news_title">@Model.Items[0].Title</a>
+
+                                <p style="font-size: 18px; font-weight: 200;  display: inline-block" class="backMainPage">Ngày đăng: @Model.Items[0].Date bởi</p>
+                                <p style="font-size: 18px; font-weight: 200; text-align:left; display: inline-block; font-style: italic;" class="backMainPage">@Model.Items[0].Unit</p>
+
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+
+
+
+
+            </div>
+        </div>
+
+        @if (Model.Items.Count > 0)
+        {
+<form asp-action="Index" method="post">
+    <input type="hidden" id="hfCurrentPage" name="currentPage" />
+    <table style="margin: auto;">
+        <tr style="font-size: 30px;">
+            <td>
+                <div style="float: right;">
+                    <style>
+                        .page-btn,
+                        #total {
+                            color: black;
+                        }
+
+                            .page-btn:hover {
+                                text-decoration: none;
+                                cursor: pointer;
+                                color: #625d5d;
+
+                            }
+
+                            #total:hover {
+                                color: black;
+                                text-decoration: underline;
+                                cursor: pointer;
+                            }
+                    </style>
+                    <a href="javascript:PagerClick(1);" class="page-btn"> Đầu </a>
+                    @if (Model.CurrentPage != 1)
+                    {
+    <a href="javascript:PagerClick(@Model.CurrentPage - 1);" class="page-btn"> Trước </a> }
+else
+{
+<a class="page-btn"> Trước </a>}
+
+                    <a id="total">@Model.CurrentPage/@Model.PageCount</a>
+
+                    @if (Model.CurrentPage != Model.PageCount)
+                    {
+    <a href="javascript:PagerClick(@Model.CurrentPage + 1);" class="page-btn"> Sau </a> }
+else
+{
+<a class="page-btn"> Sau </a>}
+                    <a href="javascript:PagerClick(@Model.PageCount);" class="page-btn"> Cuối </a>
+                </div>
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        function PagerClick(index) {
+            document.getElementById("hfCurrentPage").value = index;
+            document.forms[0].submit();
+        }
+    </script>
+</form>}
+
+
+
+
+
+        <style>
+            .page-btn {
+                margin-left: 5px;
+                margin-right: 5px;
+            }
+
+
+            .form-submit {
+                background: transparent;
+                border: 1px solid #f5f5f5;
+                color: #fff;
+                width: 100%;
+                display: block;
+                text-transform: uppercase;
+                padding: 6px 2px;
+                transition: 0.25s ease-in-out;
+                margin-top: 30px;
+                text-decoration: none;
+                border-radius: 12px;
+                text-align: center;
+            }
+
+            .form-frame {
+                position: fixed !important;
+                border-radius: 24px !important;
+                padding: 30px 30px 40px;
+                background-color: #fff;
+                box-shadow: 0px 0px 17px 2px #edcd1f;
+            }
+        </style>
+    </div>
+
+
+
+    <div id="veChungToi" class="gioiThieu">
+        <div class="gioiThieu-mid">
+            <!-- <div class="space"></div> -->
+            <div class="gioiThieu-text">
+                <p class="gioiThieu-text-title">Về Chúng Tôi</p>
+                <p style="font-size: 20px;font-weight: 500;text-align: justify;">
+                    LAB THẦY SINH được thành lập bởi PGS.TS Hoàng Vĩnh Sinh. Trải qua một thời gian hoạt động, với sự nhiệt tình của Thầy, Chị và các thành viên LAB đã đi vào hoạt động ổn định và quy củ mặc cho những khó khăn ban đầu. Quan trọng hơn, LAB đã dần thể hiện rõ tâm huyết và mong muốn của PGS.TS Hoàng Vĩnh Sinh về một LAB không chỉ tập trung vào lĩnh vực chuyên môn, mà còn trong khía cạnh Phát triển bản thân.
+
+                </p>
+            </div>
+        </div>
+
+        <p class="title-gioithieu">Lab Thầy Sinh</p>
+        <div class="container-gioithieu">
+            <img src="~/img/LTScuachungtoi.png" alt="" style="width: 60vw;">
+            <div class="container-gioithieu-list" style="width: 25vw;">
+                <div class="container-gioithieu-item">
+                    <ul class="container-content-list">
+                        <h3>Cơ cấu Lab</h3>
+                        <li class="container-content-item">Nhà sáng lập: PGS.TS Hoàng Vĩnh Sinh</li>
+                        <li class="container-content-item">Nhà đồng sáng lập: chị Đỗ Thị Hường</li>
+                        <li class="container-content-item">Các Coach và các cựu sinh viên</li>
+                        <li class="container-content-item">80 thành viên chính thức</li>
+                        <li class="container-content-item">20 thành viên Leader Team</li>
+                        <li class="container-content-item">7 Ban</li>
+                        <li class="container-content-item">5 Power Team chuyên môn</li>
+                    </ul>
+                    <ul class="container-content-list">
+                        <h3>Thông tin liên hệ</h3>
+                        <li class="container-content-item">Lab Thầy Sinh</li>
+                        <li class="container-content-item">Địa chỉ: 18 ngõ 163/3 Tư Đình, Long Biên, Hà Nội</li>
+                        <li class="container-content-item">Điện thoại: 097 265 87 28</li>
+                        <li class="container-content-item">Email: labthaysinhtechmater@gmail.com</li>
+                    </ul>
+                </div>
+                <div class="container-gioithieu-item"></div>
+            </div>
+        </div>
+
+
+        <div class="dataLab">
+            <div class="wrapper-data">
+                <div class="data">
+                    <p>2020</p>
+                    <p class="data-text">Năm Thành Lập</p>
+                </div>
+                <div class="data">
+                    <p>86</p>
+                    <p class="data-text">Thành Viên</p>
+                </div>
+                <div class="data">
+                    <p>20</p>
+                    <p class="data-text">Dự Án</p>
+                </div>
+                <div class="data">
+                    <p>5</p>
+                    <p class="data-text" style="">Sự Kiện</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <h2 id="giaTriCotLoi" class="title">Giá Trị Cốt Lõi</h2>
+    <div style="width:65vw" class="splide" role="group" aria-label="Splide Basic HTML Example">
+        <div class="splide__track">
+            <ul class="splide__list">
+                <li class="splide__slide" 1>
+                    <div class="mySlides">
+                        <div class="quyTac">
+                            <img src="./img/quyTacUngXu.png" alt="" class="quyTac-img">
+                            <h3 class="quyTac-title">Biết Ơn</h3>
+                            <p class="quyTac-text">Hãy nói cảm ơn và luôn thể hiện lòng biết ơn theo nhiều cách với những người xung quanh.  Ăn mừng chiến thắng của mình và của người khác mỗi khi đạt được mục tiêu.</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="splide__slide">
+                    <div class="mySlides">
+                        <div class="quyTac">
+                            <img src="./img/quyTacUngXu.png" alt="" class="quyTac-img">
+                            <h3 class="quyTac-title">Gia Đình</h3>
+                            <p class="quyTac-text">Là một gia đình - trong đó các thành viên cùng nhau tạo ra một gia đình, một hệ thống sinh thái một cộng đồng chất lượng với mục tiêu tất cả các thành viên sẽ có cuộc sống thịnh vượng, bình an, hạnh phúc và bền vững. </p>
+                        </div>
+                    </div>
+                </li>
+                <li class="splide__slide">
+                    <div class="mySlides fade">
+                        <div class="quyTac">
+                            <img src="./img/quyTacUngXu.png" alt="" class="quyTac-img">
+                            <h3 class="quyTac-title">Làm Chủ</h3>
+                            <p class="quyTac-text">Hoàn toàn chịu trách nhiệm về mọi hoạt động, kết quả và mọi công việc đang diễn ra trong công việc, nhiệm vụ được giao</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="splide__slide">
+                    <div class="mySlides fade">
+                        <div class="quyTac">
+                            <img src="./img/quyTacUngXu.png" alt="" class="quyTac-img">
+                            <h3 class="quyTac-title">Cam Kết </h3>
+                            <p class="quyTac-text">Cam kết thực hiện đúng 100%, đủ, đều, đúng hạn các chiến lược, kế hoạch hành động, quy tắc xử lý của Đội trừ trường hợp bất khả kháng.</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="splide__slide">
+                    <div class="mySlides fade">
+                        <div class="quyTac">
+                            <img src="./img/quyTacUngXu.png" alt="" class="quyTac-img">
+                            <h3 class="quyTac-title">Giao Tiếp</h3>
+                            <p class="quyTac-text">Giao tiếp tích cực với các thành viên trong LAB, nhận và xin lỗi khi sai. Lắng nghe một cách chân thành, góp ý theo các tích cực trong hoạt động của LAB. </p>
+                        </div>
+                    </div>
+                </li>
+                <li class="splide__slide">
+                    <div class="mySlides fade">
+                        <div class="quyTac">
+                            <img src="./img/quyTacUngXu.png" alt="" class="quyTac-img">
+                            <h3 class="quyTac-title">Làm Việc Đội Nhóm</h3>
+                            <p class="quyTac-text">Nhiệt tình có trách nhiệm với nhóm tập thể. Sử dụng kĩ năng, thế mạnh của mình chia sẻ cho các thành viên trong Team để tất cả cùng nhau phát triển và gắn kết với nhau hơn.</p>
+                        </div>
+                    </div>
+                </li>
+                <li class="splide__slide">
+                    <div class="mySlides fade">
+                        <div class="quyTac">
+                            <img src="./img/quyTacUngXu.png" alt="" class="quyTac-img">
+                            <h3 class="quyTac-title">Cho Là Nhận</h3>
+                            <p class="quyTac-text">Hãy gieo trồng, tạo nhân tốt, bạn sẽ có được kết quả ngọt.  Sẵn sàng chia sẻ những gì bạn có để giúp đỡ đồng đội để họ cùng chiến thắng, rồi bạn sẽ nhận lại những thứ mà bạn xứng đáng.</p>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <br>
+
+
+
+    <div class="space2"></div>
+
+    <div id="doiTac" class="doiTac">
+        <p>Đối tác</p>
+        <div class="doiTac-list">
+            <div class="doiTac-item">
+                <img style="width: 60px;" src="./img/logo-vin.jpg" alt="">
+            </div>
+            <div class="doiTac-item">
+                <img style="width: 130px;" src="./img/logo-tanphat.jpg" alt="">
+            </div>
+            <div class="doiTac-item">
+                <img style="width: 60px;" src="./img/logo-newtek.jpg" alt="">
+            </div>
+            <div class="doiTac-item">
+                <img style="width: 60px;" src="./img/logo-gamis.png" alt="">
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!-- phần chân trang -->
+    <div id="footer">
+        <iframe style=" border-radius: 20px; width: 30vw;  height: 30vw;   margin:18px 0 18px -30px" <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.031332061914!2d105.88605751420201!3d21.03143229306462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135a968a2703a33%3A0x4cc579c8cf3ef157!2zMTggTmcuIDE2My8zIFAuIFTGsCDEkMOsbmgsIExvbmcgQmnDqm4sIEjDoCBO4buZaSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1661511004484!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <!-- style=" border-radius: 20px; width: 30vw;  height: 30vw;   margin:18px 0 18px -30px" -->
+        <div class="info">
+            <p class="footer-text">Thông tin liên hệ</p>
+            <ul class="info-list">
+                <li class="info-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <p>097 265 87 28</p>
+                </li>
+                <li class="info-item">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <p>labthaysinhtechmater@gmail.com</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="info">
+            <p class="footer-text">Các mạng xã hội của Lab</p>
+            <ul class="info-list">
+                <li class="info-item">
+                    <i style="color:#ff0000" class="fa-brands fa-youtube"></i>
+                    <p>
+                        <a href="https://www.youtube.com/channel/UCsZheMxcY75OSA0rJqfNXzA" target="_blank">Youtube</a>
+                    </p>
+                </li>
+                <li class="info-item">
+                    <i style="color:#097eeb" class="fa-brands fa-facebook"></i>
+                    <p>
+                        <a href="https://www.facebook.com/LabThaySinh" target="_blank">Facebook</a>
+                    </p>
+                </li>
+                <li class="info-item">
+                    <i class="fa-brands fa-tiktok"></i>
+                    <p>
+                        <a href="https://www.tiktok.com/&#64lab_thay_sinh" target="_blank">Tiktok</a>
+                    </p>
+                </li>
+                <li class="info-item">
+                    <i style="color:#c94571" class="fa-brands fa-instagram-square"></i>
+                    <p>
+                        <a href="https://www.instagram.com/lab_thay_sinh/" target="_blank">Instagram</a>
+                    </p>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    </div>
+
+    <script>
+        var splide = new Splide('.splide', {
+            type: 'loop',
+            perPage: 3,
+            height: '400px',
+            width: " 100vw",
+            focus: 'center',
+            // autoWidth: true,
+            autoplay: true,
+            speed: 1000,
+            // pagination :false,
+        });
+
+        splide.mount();
+    </script>
+
+
+</body>
+</html>

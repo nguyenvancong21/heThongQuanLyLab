@@ -1,0 +1,529 @@
+﻿@model ItemDisplay<Member>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @section Buttons{
+        @if (Model.SessionVar == "Ban Nhân Sự")
+        {
+            <a asp-action="Account" class="header-item">Tài khoản</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if (Model.SessionVar == "Ban Đào Tạo")
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            <a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if ((Model.SessionVar == "Ban Truyền Thông") || (Model.SessionVar == "Ban Sự Kiện"))
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            //<a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if ((Model.SessionVar == "Ban Điều Hành") || (Model.SessionVar == "Ban Cố Vấn") || (Model.SessionVar == "Nhà Sáng Lập") || (Model.SessionVar == "Nhà Đồng Sáng Lập"))
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if (Model.SessionVar.Contains("PT"))
+        {
+            <a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else
+        {
+            <a class="header-item"></a>
+            //<a asp-action="Notification" class="header-item">Thông báo</a>
+            //<a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+    }
+
+    @section Login{
+        <li class="user-info-item">
+            <a target="_blank" href="@Model.Link[1]">Lịch làm việc</a>
+        </li>
+        <li class="user-info-item">
+            <a target="_blank" href="@Model.Link[2]">Báo lỗi</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Login" asp-action="ChangetoChangePassword">Đổi mật khẩu</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Home" asp-action="Index">Đăng xuất</a>
+        </li>
+    }
+}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="~/css/nhanSu&DuAn.css">
+</head>
+<body>
+    @RenderBody()
+    <form asp-action="Member" method="post" style="z-index: 0;">
+        <div class="wrap-back" style="display:flex;">
+            <a asp-action="Index"><h2 class="backMainPage"> Trang Chủ</h2></a>
+            <p>/</p>
+            <a asp-action="Member"><h2 style="padding-left: 10px;" class="backMainPage"> Nhân Sự</h2></a>
+        </div>
+
+
+
+        <div class="wrap-button">
+            @RenderSection("Field", required: false)
+            @if ((Model.SessionVar == "Ban Nhân Sự") && (Model.Field == "All"))
+            {
+                <button class="add-nhanSu" type="button" onclick="location.href='@Url.Action("AddMember_New")'">Thêm Nhân Sự</button>
+            }
+            else
+            {
+                <button class="add-nhanSu" type="button" onclick="location.href='@Url.Action("AddMember")'">Thêm Nhân Sự</button>
+            }
+
+            <button class="btn-excel" type="button" onclick="location.href='@Url.Action("ExportMemberToExcel", new { exportVar = Model.Field})'">Xuất file Excel</button>
+        </div>
+
+        <div class="wrap-sreach">
+            <input name="searchString" class="search" type="text" placeholder="Điền thông tin" value="@Model.CurrentSearchString" autocomplete="off">
+            <select name="searchField" id="searchField">
+                @if (!String.IsNullOrWhiteSpace(@Model.CurrentSearchField))
+                {
+                    <option value="@Model.CurrentSearchField">@Model.NameVar[Model.CurrentSearchField]</option>
+                }
+
+                @foreach (var item in Model.SearchFieldList)
+                {
+                    @if ((item != Model.CurrentSearchField) && Model.NameVar.ContainsKey(item))
+                    {
+                        <option value="@item">@Model.NameVar[@item]</option>
+                    }
+                }
+            </select>
+            <button type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Tìm Kiếm
+            </button>
+        </div>
+
+        <div class="container mt-2">
+            <table class="table">
+                <tr>
+                    <th style="text-align: center; width: 5%;">
+                        LAB ID
+                        <button name="sortOrder" id="LabID" value="LabID" onchange="this.forms.submit">
+                            <i class="fa fa-sort"></i>
+                        </button>
+                    </th>
+                    <th style="text-align: center; width: 17.5%;">
+                        TÊN THÀNH VIÊN
+                        <button name="sortOrder" id="Name" value="Name" onchange="this.forms.submit">
+                            <i class="fa fa-sort"></i>
+                        </button>
+                    </th>
+                    <th style="text-align: center; width: 5%;">GIỚI TÍNH</th>
+                    <th style="text-align: center; width: 15%;">
+                        NGÀY SINH
+                        <button name="sortOrder" id="Birthday" value="Birthday" onchange="this.forms.submit">
+                            <i class="fa fa-sort"></i>
+                        </button>
+                    </th>
+
+                    <th style="text-align: center; width: 5%;">
+                        THẾ HỆ
+                        <button name="sortOrder" id="Gen" value="Gen" onchange="this.forms.submit">
+                            <i class="fa fa-sort"></i>
+                        </button>
+                    </th>
+                    <th style="text-align: center; width: 20%;">
+                        Đơn vị
+                        <button name="sortOrder" id="Unit" value="Unit" onchange="this.forms.submit">
+                            <i class="fa fa-sort"></i>
+                        </button>
+                    </th>
+                    <th style="text-align: center; width: 20%;">CHỨC VỤ</th>
+                    <th style="text-align: center;">Chức năng</th>
+
+                    <script>
+                            var modelSortOrder = "@Html.Raw(Model.SortOrder)";
+                            var idSort = document.getElementById("LabID");
+                            if (modelSortOrder === "LabID") {
+                                idSort.value = "LabID_desc";
+                            }
+
+                            var idSort = document.getElementById("Name");
+                            if (modelSortOrder === "Name") {
+                                idSort.value = "Name_desc";
+                            }
+
+                            var idSort = document.getElementById("Birthday");
+                            if (modelSortOrder === "Birthday") {
+                                idSort.value = "Birthday_desc";
+                            }
+
+                            var idSort = document.getElementById("Gen");
+                            if (modelSortOrder === "Gen") {
+                                idSort.value = "Gen_desc";
+                            }
+
+                            var idSort = document.getElementById("Unit");
+                            if (modelSortOrder === "Unit") {
+                                idSort.value = "Unit_desc";
+                            }
+
+                    </script>
+                </tr>
+
+                @if (Model.PageCount >= 0)
+                {
+                    foreach (var item in Model.Items)
+                    {
+                        <tr id="0" style="user-select: auto;">
+                            <td style="user-select: auto; text-align: center;"> @item.LabID</td>
+                            <td style="user-select: auto;"> @item.Name</td>
+                            <td style="user-select: auto; text-align: center;"> @item.Sex</td>
+                            <td style="user-select: auto; text-align: center;"> @item.Birthday</td>
+                            <td style="user-select: auto; text-align: center;"> @item.Gen</td>
+                            <td style="user-select: auto; text-align: center;"> @item.Unit</td>
+                            <td style="user-select: auto; text-align: center;"> @item.Position</td>
+                            <td style="user-select: auto; text-align: center;">
+                                <button type="button" onclick="inforDetail(@item.Key)"><i class="fa fa-info-circle"></i></button>
+                                @if ((Model.SessionVar == "Ban Nhân Sự") || (!((Model.Field == "All") || (Model.Field == "LT") || (Model.Field == "PT"))))
+                                {
+                                    <button type="button" onclick="confirm_detele(@item.Key)" id="deleteMember" value="@item.LabID">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                }
+                                else if ((Model.SessionVar == "Ban Điều Hành") && (Model.Field == "LT"))
+                                {
+                                    <button type="button" onclick="confirm_detele(@item.Key)" id="deleteMember" value="@item.LabID">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+
+        <table>
+            <tr style="font-size: 20px;">
+                <td>
+                    <a>Tổng Thành Viên: </a>
+                    <span id="total">@Model.ItemCount</span>
+                </td>
+
+                @if (Model.PageCount > 0)
+                {
+                    <td>
+                        <a>Trang: </a>
+                        <span id="total">@Model.CurrentPage/@Model.PageCount</span>
+                    </td>
+                }
+
+
+                <td>
+                    <div style="float: right;">
+                        <a href="javascript:PagerClick(1);" class="page-btn"> Đầu </a>
+
+                        @if (Model.CurrentPage != 1)
+                        {
+                            <a href="javascript:PagerClick(@Model.CurrentPage - 1);" class="page-btn"> Trước </a>
+                        }
+                        else
+                        {
+                            <a class="page-btn"> Trước </a>
+                        }
+
+
+                        @{
+                            if (Model.CurrentPage <= 3)
+                            {
+                                for (int i = 1; i <= Math.Min(Model.PageCount, 5); i++)
+                                {
+                                    @if (i != Model.CurrentPage)
+                                    {
+                                        <a href="javascript:PagerClick(@i);" class="page-btn">@i</a>
+                                    }
+                                    else
+                                    {
+                                        <span style="color:#f00;" class="page-btn">@i</span>
+                                    }
+                                }
+                            }
+                            else if (Model.CurrentPage >= Model.PageCount - 2)
+                            {
+                                for (int i = Math.Max(1, Model.PageCount - 4); i <= Model.PageCount; i++)
+                                {
+                                    @if (i != Model.CurrentPage)
+                                    {
+                                        <a href="javascript:PagerClick(@i);" class="page-btn">@i</a>
+                                    }
+                                    else
+                                    {
+                                        <span style="color:#f00;" class="page-btn">@i</span>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for (int i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.PageCount, Model.CurrentPage + 2); i++)
+                                {
+                                    @if (i != Model.CurrentPage)
+                                    {
+                                        <a href="javascript:PagerClick(@i);" class="page-btn">@i</a>
+                                    }
+                                    else
+                                    {
+                                        <span style="color:#f00;" class="page-btn">@i</span>
+                                    }
+                                }
+                            }
+                        }
+
+
+                        @if (Model.CurrentPage != Model.PageCount)
+                        {
+                            <a href="javascript:PagerClick(@Model.CurrentPage + 1);" class="page-btn"> Sau </a>
+                        }
+                        else
+                        {
+                            <a class="page-btn"> Sau </a>
+                        }
+
+                        <a href="javascript:PagerClick(@Model.PageCount);" class="page-btn"> Cuối </a>
+                    </div>
+
+
+
+                </td>
+                <td width="120px">
+                    <a style="float: right;">
+                        <input type="number" style="width: 50px; height: 23px;" id="hfCurrentPage" name="currentPage" placeholder="1" min="1" max="@Model.PageCount" />
+                        <input type="submit" style="height: 23px;" value="Đến">
+                    </a>
+                </td>
+            </tr>
+
+        </table>
+
+    </form>
+
+    <script type="text/javascript">
+        function PagerClick(index) {
+            document.getElementById("hfCurrentPage").value = index;
+            document.forms[0].submit();
+        }
+    </script>
+
+    <style>
+        .page-btn {
+            margin-left: 5px;
+            margin-right: 5px;
+            color: white;
+        }
+
+            .page-btn:hover {
+                color: #fff;
+            }
+        td a {
+            color: white;
+        }
+        .form-submit {
+            background: transparent;
+            border: 1px solid #f5f5f5;
+            color: #fff;
+            width: 100%;
+            display: block;
+            text-transform: uppercase;
+            padding: 6px 2px;
+            transition: 0.25s ease-in-out;
+            margin-top: 30px;
+            text-decoration: none;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .form-frame {
+            position: fixed !important;
+            border-radius: 24px !important;
+            padding: 30px 30px 40px;
+            background-color: #fff;
+            box-shadow: 0px 0px 4px 2px #edcd1f;
+        }
+    </style>
+
+    @if (Model.PageCount >= 0)
+    {
+        <style>
+            .form-frame table tr td {
+                height: 18px;
+            }
+
+            .form-frame table td:nth-child(odd) {
+                font-weight: bold;
+            }
+
+            .nutan {
+                height: 40px;
+                width: 100px;
+                background-color: #edcd1f;
+                border-radius: 12px;
+            }
+        </style>
+        foreach (var item in Model.Items)
+        {
+            <div style="display: none; width: 80%; height: 80%; top: 110px; left: 10%; z-index: 1;" class="form-frame infor-form" id="@item.Key">
+                <div class="avt" style="text-align: center; width: 30%; margin-right: 50px; border: 1px #ffd800 solid;">
+                    <div style="padding-top: 20px; padding-bottom: 30px; width: 85%; height: auto; margin: auto;">
+                        <img style="border: 1px #ffd800 solid; width: 100%; height: 100%;" src="~/img/avt/@item.Avt" alt="">
+                    </div>
+                    <div style="text-align: center; color: #edcd1f; font-weight: bold; font-size: 18px;">
+                        @item.Name
+                    </div>
+                    <div style="text-align: center; color: #a00; font-weight: bold; font-size: 24px; margin-top: 10px;">
+                        Gen: @item.Gen
+                    </div>
+                    <div style="text-align: center; margin-top: 10px;">
+                        @if (item.IsPassPTBT)
+                        {<a style="color: #0a0;"> Đã qua Phát triển bản thân </a>}
+                        else
+                        {<a style="color: #ff6a00;"> Chưa qua Phát triển bản thân </a>}
+                    </div>
+                </div>
+
+                <div style="width: 60%;">
+                    <table style="width: 100%;">
+                        <tr>
+                            <td style="text-align: center;" colspan="4">THÔNG TIN THÀNH VIÊN: <span style="font-weight: bold; color: #ffd800">@item.LabID</span> </td>
+                        </tr>
+                        <tr> <td width="25%"> Tên thành viên</td><td colspan="3"> @item.Name</td></tr>
+                        <tr> <td width="25%"> Giới tính:</td><td width="32%"> @item.Sex</td><td width="18%"> Ngày sinh:</td><td> @item.Birthday</td></tr>
+                        <tr> <td width="25%"> Số điện thoại:</td><td colspan="3"> @item.Phone</td></tr>
+                        <tr> <td width="25%"> Email:</td><td colspan="3"> @item.Email</td></tr>
+                        <tr> <td width="25%"> Địa chỉ: </td><td colspan="3"> @item.Address</td></tr>
+                        <tr> <td width="25%"> Chuyên ngành: </td><td colspan="3"> @item.Specialization</td></tr>
+                        <tr> <td width="25%"> Trường: </td><td colspan="3"> @item.University</td></tr>
+                        <tr> <td width="25%"> Đơn vị:</td><td colspan="3"> @item.Unit</td></tr>
+                        <tr> <td width="25%"> Chức vụ:</td><td colspan="3"> @item.Position</td></tr>
+                    </table>
+                    <div>
+                        @if (Model.SessionVar == "Ban Nhân Sự")
+                        {
+                            <div style="margin-top: 2%;">
+                                <a href="@Url.Action("MemberCV", new{ Key = @item.Key})" target="_blank">
+                                    <button type="button" class="nutan">CV</button>
+                                </a>
+                                <button type="button" style="left: 20%;" class="nutan" onclick="location.href='@Url.Action("EditMember", new{ Key = @item.Key})'">Sửa thông tin</button>
+                                <button type="button" style="left: 40%;" class="nutan" onclick="confirm_detele(@item.Key)">Xóa</button>
+                                <button type="button" style="float: right !important;" onclick="inforDetail_disabled()" class="nutan">Thoát</button>
+                            </div>
+                        }
+                        else
+                        {
+                            <div style="margin-top: 2%;">
+                                <a href="@Url.Action("MemberCV", new{ Key = @item.Key})" target="_blank">
+                                    <button type="button" class="nutan">CV</button>
+                                </a>
+                                @if (!((Model.Field == "All") || (Model.Field == "LT") || (Model.Field == "PT")))
+                                {
+                                    <button type="button" style="left: 0%;" class="nutan" onclick="confirm_detele(@item.Key)">Xóa</button>
+                                }
+                                
+                                @if ((Model.SessionVar == "Ban Cố Vấn") || (Model.SessionVar == "Nhà Sáng Lập") || (Model.SessionVar == "Nhà Đồng Sáng Lập"))
+                                {
+                                    <a href="@Url.Action("AssessMember", new{ Key = @item.Key})" target="_blank">
+                                        <button type="button" class="nutan">Đánh giá</button>
+                                    </a>
+                                }
+
+                                <button type="button" style="float: right !important;" onclick="inforDetail_disabled()" class="nutan">Thoát</button>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: none; width: 40%; height: 30%; left: 30%; top: 30%; z-index: 2; text-align: center;" class="form-frame delete-form" id="@item.Key">
+                @if (Model.Field == "All")
+                {
+                    <a style="text-align: center; color: #000;"> Bạn có chắc chắn muốn xóa thành viên có LabID = @item.LabID không? </a>
+                }
+                else if (Model.Field == "LT")
+                {
+                    <a style="text-align: center; color: #000;"> Bạn có chắc chắn muốn xóa thành viên có LabID = @item.LabID khỏi Leader Team không? </a>
+                }
+                else
+                {
+                    <a style="text-align: center; color: #000;"> Bạn có chắc chắn muốn xóa thành viên có LabID = @item.LabID khỏi @Model.SessionVar không? </a>
+                }
+
+                <div>
+                    <button class="form-submit" style="color:#000; border: 1px #edcd1f solid;" onclick="location.href='@Url.Action("DeleteMember", new{ Key = @item.Key, field = Model.Field})'" value="Có">Có</button>
+                    <button class="form-submit" onclick="confirm_delete_disabled()" style="margin-top: 15px; color:#000; border: 1px #edcd1f solid;">Không</button>
+                </div>
+            </div>
+        }
+    }
+
+
+    <script>
+        function inforDetail(id) {
+            var subScene = document.getElementsByClassName("infor-form");
+            for (let i = 0; i < subScene.length; i++) {
+                subScene[i].style.display = "none";
+                if (subScene[i].id == id) {
+                    subScene[i].style.display = "flex";
+                }
+            }
+        }
+
+        function inforDetail_disabled() {
+            var subScene = document.getElementsByClassName("infor-form");
+            for (let i = 0; i < subScene.length; i++) {
+                subScene[i].style.display = "none";
+            }
+        }
+
+        function confirm_detele(id) {
+            var subScene = document.getElementsByClassName("delete-form");
+            for (let i = 0; i < subScene.length; i++) {
+                subScene[i].style.display = "none";
+                if (subScene[i].id.valueOf() == id.valueOf()) {
+                    subScene[i].style.display = "block";
+                }
+            }
+        }
+
+        function confirm_delete_disabled() {
+            var subScene = document.getElementsByClassName("delete-form");
+            for (let i = 0; i < subScene.length; i++) {
+                subScene[i].style.display = "none";
+            }
+        }
+    </script>
+
+</body>
+</html>

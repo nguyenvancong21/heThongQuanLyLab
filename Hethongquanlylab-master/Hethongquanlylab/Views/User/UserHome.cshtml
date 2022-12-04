@@ -1,0 +1,26 @@
+﻿@model ItemDisplay<Notification>
+
+<script>
+    alert(@Model.Message)
+</script>
+@{
+    Layout = "~/Views/Shared/_Layout_Home.cshtml";
+    @section Buttons{
+        <a asp-action="Assignment" class="header-item">Bài tập</a>
+        <a asp-action="Training" class="header-item">Đào tạo</a>
+        <a asp-action="Infor" class="header-item">Thông tin cá nhân</a>
+        <a asp-action="Index" class="header-item">Trang chủ</a>
+    }
+
+    @section Login{
+        <li class="user-info-item">
+            <a target="_blank" href="@Model.Link[0]">Biểu mẫu</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Login" asp-action="ChangetoChangePassword">Đổi mật khẩu</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Home" asp-action="Index">Đăng xuất</a>
+        </li>
+    }
+}

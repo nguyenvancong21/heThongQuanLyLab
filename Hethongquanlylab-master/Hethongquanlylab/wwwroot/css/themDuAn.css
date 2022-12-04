@@ -1,0 +1,18 @@
+.wrap-themDuAn{
+    width: 1030px;
+    
+    flex-wrap: wrap;
+    margin: auto;
+    justify-content: space-between;
+}
+
+.wrap-themDuAn label{
+    width: 30vw;
+   
+    flex-direction: column;
+}
+
+.wrap-themDuAn label input{
+    padding: 8px 24px;
+    margin: 12px 0;
+}

@@ -1,0 +1,21 @@
+﻿@model ItemDisplay<Notification>
+@{
+    Layout = "~/Views/Shared/_Layout_Home.cshtml";
+    @section Buttons{
+        <a href="#doiTac" class="header-item">Đối Tác</a>
+        <a href="#giaTriCotLoi" class="header-item">Giá trị cốt lõi</a>
+        <a href="#veChungToi" class="header-item">Về Chúng Tôi</a>
+        <a href="#tinTuc" class="header-item">Tin Tức</a>
+        <a href="#header" class="header-item">Trang chủ</a>
+    }
+
+    @section Login{
+        <li class="user-info-item">
+            <a target="_blank" href="@Model.Link[2]">Báo lỗi</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Login">Đăng nhập</a>
+        </li>
+    }
+}
+

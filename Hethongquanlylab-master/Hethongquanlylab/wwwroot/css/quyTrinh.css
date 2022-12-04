@@ -1,0 +1,45 @@
+.quyTrinh-list{
+    width:80vw;
+    margin: auto;
+
+}
+.quyTrinh-item{
+    border-radius: 20px;
+    padding: 20px 58px;
+    background-color: #1e2d3b;
+    color: #edcd1f;
+
+}
+.quyTrinh-item:hover{
+    cursor: pointer;
+    background-color: #3f5264;
+}
+.quyTrinh-item + .quyTrinh-item{
+    margin-top:20px;
+    
+}
+.quyTrinh-title{
+    font-size: 20px;
+    font-weight: 600;
+}
+.quyTrinh-date{}
+.quyTrinh-desc{}
+.quyTring-btn{
+    display: flex;
+    margin: auto;
+    margin-right: 0;
+    padding: 12px 36px;
+}
+
+.overlay{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+    background-color: rgba(0,0,0,0.5);
+    display: none;
+}

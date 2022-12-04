@@ -1,0 +1,225 @@
+﻿@model Notification
+
+@{
+    @section Buttons{
+        <a asp-action="Procedure" class="header-item">Quy trình</a>
+        <a asp-action="Member" class="header-item">Nhân sự</a>
+        <a asp-action="Index" class="header-item">Trang chủ</a>
+    }
+
+    @section Login{
+        <li class="user-info-item">
+            <a asp-controller="Login" asp-action="ChangetoChangePassword">Đổi mật khẩu</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Home" asp-action="Index">Đăng xuất</a>
+        </li>
+    }
+}
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/nhanSu&DuAn.css">
+    <link rel="stylesheet" href="~/css/subScene.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jodit/3.20.2/jodit.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jodit/3.20.2/jodit.min.js"></script>
+</head>
+<body>
+    <div class="wrap-back" style="display:flex;">
+        <a asp-action="Index"><h2 class="backMainPage"> Trang Chủ</h2></a>
+        <p>/</p>
+        <a asp-action="Procedure"><h2 style="padding-left: 10px;" class="backMainPage"> Quy trình</h2></a>
+        <p>/</p>
+        <a asp-action="ProcedureDetail"><h2 style="padding-left: 10px;" class="backMainPage"> Chi tiết quy trình</h2></a>
+    </div>
+    <div style="width: 1030px;margin: auto;text-align: right;">
+        <button class="btn-excel">Xuất file PDF</button>
+    </div>
+    <form asp-action="EditNotication" asp-route-id="@Model.ID" method="post">
+
+        <style>
+            .text-ProcedureTitle {
+                justify-content: center;
+                font-size: 30px;
+                font-weight: 600;
+            }
+        </style>
+        <div style="display: flex; margin-bottom: 30px;" class="text-ProcedureTitle">
+            <div id="name-DuAn">@Model.Title</div>
+            <input style="display: none;" class="text-ProcedureTitle" id="name-input" type="text" placeholder="Tên Quy trình" value="@Model.Title" name="Name">
+            <i style="margin-left: 20px; cursor:pointer;" class="fa-regular fa-pen-to-square" id="wrap-DuAn"></i>
+        </div>
+
+
+        <div style="display: flex ;justify-content: space-between;margin: auto; width: 60vw;" class="date-DuAn">
+            <div style="display:flex" class="start">
+                <p>Thời gian đăng: </p>
+                <div style="display:flex; margin: 16px 10px; justify-content: center;" id="wrap-date">
+                    <div id="text-date">@Model.Date</div>
+                    <input style="display: none; height: 25px;" id="input-date" type="date" name="Sendate" value="@Model.Date">
+                </div>
+            </div>
+
+        </div>
+        <div style="width: 1030px;margin: auto;">
+            <p>Nội Dung <i style="margin-left: 20px;; cursor: pointer;" class="fa-regular fa-pen-to-square" id="wrap-noiDung"></i></p>
+            <style>
+                .text-ProcedureContent {
+                    height: 300px;
+                    background-color: #f5f5f5;
+                    border: 2px solid #ccc;
+                    line-height: 34px;
+                    padding: 20px 10px;
+                }
+            </style>
+            <div style="display: block;" class="text-ProcedureContent"
+                 id="text-noiDung">
+                @Html.Raw(Model.Content)
+            </div>
+            <textarea name="Content" style="display: none; padding: 20px 10px; line-height: 34px; width: 100%; height: 300px; " id="input-noiDung" cols="30" rows="40" value="Nội dung">@Html.Raw(Model.Content)</textarea>
+        </div>
+
+        <style>
+            .link {
+                color: #00a;
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        </style>
+        <div style="display: flex; width: 1030px; margin: auto;">
+            <p style="margin-right: 12px;">Link Quy Trình: </p>
+            <a style="margin: auto 0" class="link" id="text-link">@Model.Link</a>
+            <script>
+                var text = document.getElementById("text-link");
+                var url = text.innerText;
+                if (!url.match(/^https?:\/\//i)) {
+                    url = 'http://' + url;
+                }
+                $("#text-link").on('click', function () {
+                    alert("Đến quy trình");
+                    window.open(url, "_blank");
+                });
+            </script>
+            <input style="display:none; height:30px; margin: auto 0;" type="text" id="input-link" value="@Model.Link" name="Link">
+            <i style="margin-left: 8px; margin-top: 10px;; cursor: pointer;" class="fa-regular fa-pen-to-square" id="wrap-link"></i>
+        </div>
+
+
+        <div class="" style="margin-left: 62%;">
+            <button class="add-nhanSu btn-confirm" onclick="confirm_change()" type="button">
+                <i class="fa-solid fa-plus"></i>
+                Lưu
+            </button>
+            <button style="margin-top:30px; margin-left: 42px;" class="add-nhanSu btn-confirm" type="button">
+                <i class="fa-solid fa-plus"></i>
+                Lưu & Gửi Duyệt
+            </button>
+
+        </div>
+
+
+        <div style="display: none; min-width: 40%; height: 30%; left: 30%; top: 30%; z-index: 1;" class="form-frame" id="change-confirm">
+            <a style="text-align: center; color: #000;"> Bạn có chắc chắn muốn thay đổi quy trình này không? </a>
+            <div>
+                <button class="form-submit" style="color:#000; border: 1px #edcd1f solid;" type="submit">Có</button>
+                <button class="form-submit" type="button" onclick="confirm_change_disabled()" style="margin-top: 15px; color:#000; border: 1px #edcd1f solid;">Không</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        function confirm_change() {
+            document.getElementById("change-confirm").style.display = "block";
+        }
+        function confirm_change_disabled() {
+            document.getElementById("change-confirm").style.display = "none";
+        }
+
+    </script>
+
+    <script>
+        $("#wrap-DuAn").click(function () {
+            document.getElementById("name-DuAn").style.display = 'none';
+            var input = document.getElementById("name-input");
+            input.style.display = 'block';
+            var end = input.value.length;
+            input.setSelectionRange(end, end);
+            input.focus();
+        })
+        $('#name-input').change(function () {
+            var textName = this.value;
+            console.log(textName);
+            if (textName) {
+                document.getElementById('name-DuAn').innerText = `${textName} `;
+            }
+        })
+        $('#name-input').focusout(function () {
+            document.getElementById("name-DuAn").style.display = 'block';
+            document.getElementById("name-input").style.display = 'none';
+        })
+
+
+        /*
+        $("#wrap-date").click(function () {
+            document.getElementById("text-date").style.display = 'none';
+            var input = document.getElementById("input-date");
+            input.style.display = 'block';
+            var end = input.value.length;
+            input.setSelectionRange(end, end);
+            input.focus();
+
+        })
+        $('#input-date').change(function () {
+            var textName = this.value;
+            console.log(textName);
+            if (textName) {
+                document.getElementById('text-date').innerText = `${textName} `;
+            }
+        })
+        $('#input-date').focusout(function () {
+            document.getElementById("text-date").style.display = 'block';
+            document.getElementById("input-date").style.display = 'none';
+        })
+        */
+
+        $("#wrap-noiDung").click(function () {
+            document.getElementById("text-noiDung").style.display = 'none';
+            var input = document.getElementById("input-noiDung");
+            input = Jodit.make(input, { autofocus: true })
+        })
+        $('#input-noiDung').change(function () {
+            var textName = this.value;
+            if (textName) {
+                document.getElementById('text-noiDung').innerText = `${textName} `;
+            }
+        })
+        $('#input-noiDung').focusout(function () {
+            document.getElementById("text-noiDung").style.display = 'block';
+            document.getElementById("input-noiDung").style.display = 'none';
+        })
+
+        $("#wrap-link").click(function () {
+            document.getElementById("text-link").style.display = 'none';
+            var input = document.getElementById("input-link");
+            input.style.display = 'block';
+            var end = input.value.length;
+            input.setSelectionRange(end, end);
+            input.focus();
+
+        })
+
+        $('#input-link').change(function () {
+            var textName = this.value;
+            if (textName) {
+                document.getElementById('text-link').innerText = `${textName} `;
+            }
+        })
+        $('#input-link').focusout(function () {
+            document.getElementById("text-link").style.display = 'block';
+            document.getElementById("input-link").style.display = 'none';
+        })
+
+    </script>
+</body>

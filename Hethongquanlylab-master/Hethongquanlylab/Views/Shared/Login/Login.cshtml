@@ -1,0 +1,57 @@
+﻿@model Hethongquanlylab.Models.Login.AccountLoginInput
+@{
+    ViewData["Title"] = "Login";
+    Layout = "";
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/img/logo_icon.png" rel="shortcut icon" type="image/x-icon" />
+    <link rel="stylesheet" href="~/css/login.css">
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+    <title>Đăng nhập</title>
+</head>
+<body>
+    <div id="wrapper">
+        <form asp-controller="Login" method="post" id="form-login">
+            <h1 class="form-heading">Đăng nhập</h1>
+            <div class="form-group">
+                <i class="far fa-user"></i>
+                <input name="UserName" type="text" class="form-input no-autofill-bgk" placeholder="Tên đăng nhập" value="@Model.UserName" autofocus>
+            </div>
+            <div class="form-group">
+                <i class="fas fa-key"></i>
+                <input id ="Input1" name="Password" type="password" class="form-input no-autofill-bgk" placeholder="Mật khẩu" value="@Model.Password">
+                <div id ="eye" onclick="TogglePassword(1)">
+                    <i id ="eye-icon" class="fa fa-eye"></i>
+                </div>
+            </div>
+
+            <div style="color:#f00">@Html.Raw(TempData["msg"])</div>
+
+            <input class="form-submit" type="submit" style="margin-top: 15px;" value="Đăng nhập">
+            <input asp-action="ChangeToForgotPassword" type="submit" class="form-submit" value="Quên mật khẩu" style="margin-top: 15px;">
+        </form>
+    </div>
+
+</body>
+<script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+<script>
+    function TogglePassword(num) {
+        var x = document.getElementById("Input" + num.toString());
+        if (x.type === "password") {
+            x.type = "text";
+            document.getElementById("eye-icon").className = "fa fa-eye-slash ";
+        } else {
+            x.type = "password";
+            document.getElementById("eye-icon").className = "fa fa-eye";
+        }
+    }
+</script>
+</html>
+

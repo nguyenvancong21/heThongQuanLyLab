@@ -1,0 +1,402 @@
+﻿@model ItemDisplay<Project>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @section Buttons{
+        @if (Model.SessionVar == "Ban Nhân Sự")
+        {
+            <a asp-action="Account" class="header-item">Tài khoản</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if (Model.SessionVar == "Ban Đào Tạo")
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            <a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if ((Model.SessionVar == "Ban Truyền Thông") || (Model.SessionVar == "Ban Sự Kiện"))
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            //<a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if ((Model.SessionVar == "Ban Điều Hành") || (Model.SessionVar == "Ban Cố Vấn") || (Model.SessionVar == "Nhà Sáng Lập") || (Model.SessionVar == "Nhà Đồng Sáng Lập"))
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if (Model.SessionVar.Contains("PT"))
+        {
+            <a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else
+        {
+            <a class="header-item"></a>
+            //<a asp-action="Notification" class="header-item">Thông báo</a>
+            //<a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            //<a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+    }
+
+    @section Login{
+        <li class="user-info-item">
+            <a target="_blank" href="@Model.Link[1]">Lịch làm việc</a>
+        </li>
+        <li class="user-info-item">
+            <a target="_blank" href="@Model.Link[2]">Báo lỗi</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Login" asp-action="ChangetoChangePassword">Đổi mật khẩu</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Home" asp-action="Index">Đăng xuất</a>
+        </li>
+    }
+}
+
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/nhanSu&DuAn.css">
+</head>
+<body>
+    @RenderBody();
+    <form asp-action="Project" method="post" style="z-index: 0;">
+        <div class="wrap-back" style="display:flex;">
+            <a asp-action="Index"><h2 class="backMainPage"> Trang Chủ</h2></a>
+            <p>/</p>
+            <a asp-action="Project"><h2 style="padding-left: 10px;" class="backMainPage">Dự án</h2></a>
+        </div>
+
+        <div class="wrap-button">
+            <button class="btn-excel" type="button" onclick="location.href='@Url.Action("AddProject")'">Thêm dự án</button>
+            <button class="btn-excel" type="button" onclick="location.href='@Url.Action("ExportProjectToExcel", new { exportVar = Model.Field})'">Xuất file Excel</button>
+        </div>
+
+        <div class="wrap-sreach">
+            <input name="searchString" class="search" type="text" placeholder="Điền thông tin" value="@Model.CurrentSearchString" autocomplete="off">
+            <select name="searchField" id="searchField">
+                @if (!String.IsNullOrWhiteSpace(@Model.CurrentSearchField))
+                {
+                    <option value="@Model.CurrentSearchField">@Model.NameVar[Model.CurrentSearchField]</option>
+                }
+
+                @foreach (var item in Model.SearchFieldList)
+                {
+                    @if ((item != Model.CurrentSearchField) && Model.NameVar.ContainsKey(item))
+                    {
+                        <option value="@item">@Model.NameVar[@item]</option>
+                    }
+                }
+            </select>
+            <button type="submit">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Tìm Kiếm
+            </button>
+        </div>
+
+
+        <div class="container mt-2">
+            <table class="table-quyTrinh">
+                <tr>
+                    <th style="text-align: center;">
+                        STT 
+                    </th>
+                    <th style="text-align: center;">
+                        Tên dự án
+                        <button name="sortOrder" id="Name" value="Name" onchange="this.forms.submit">
+                            <i class="fa fa-sort"></i>
+                        </button>
+                    </th>
+                    <th style="text-align: center;">
+                        Ngày bắt đầu
+                        <button name="sortOrder" id="Startday" value="Startday" onchange="this.forms.submit">
+                            <i class="fa fa-sort"></i>
+                        </button>
+                    </th>
+                    <th style="text-align: center;">
+                        Ngày kết thúc
+                        <button name="sortOrder" id="Endday" value="Endday" onchange="this.forms.submit">
+                            <i class="fa fa-sort"></i>
+                        </button>
+                    </th>
+                    <th style="text-align: center;">
+                        Loại dự án
+                        <button name="sortOrder" id="ProjectType" value="Type" onchange="this.forms.submit">
+                            <i class="fa fa-sort"></i>
+                        </button>
+                    </th>
+                    <th style="text-align: center;">
+                        Đơn vị
+                        <button name="sortOrder" id="Unit" value="Unit" onchange="this.forms.submit">
+                            <i class="fa fa-sort"></i>
+                        </button>
+                    </th>
+                    <th style="text-align: center;">
+                        Trạng thái
+                        <button name="sortOrder" id="Status" value="Status" onchange="this.forms.submit">
+                            <i class="fa fa-sort"></i>
+                        </button>
+                    </th>
+                    <th style="text-align: center; width: 5%;">
+                        Chức năng
+                    </th>
+                </tr>
+
+
+                @if (Model.PageCount > 0)
+                {
+                    foreach (var item in Model.Items.Select((x, i) => new { Value = x, Index = i + 1 }))
+                    {
+                        <tr id="0" style="user-select: auto;">
+                            <td style="user-select: auto; text-align: center;"> @item.Index</td>
+                            <td style="user-select: auto;"> @item.Value.Name</td>
+                            <td style="user-select: auto; text-align: center;"> @item.Value.Startday</td>
+                            <td style="user-select: auto; text-align: center;"> @item.Value.Endday</td>
+                            <td style="user-select: auto; text-align: center;"> @item.Value.Type</td>
+                            <td style="user-select: auto; text-align: center;"> @item.Value.Unit</td>
+                            <td style="user-select: auto; text-align: center;"> @item.Value.Status</td>
+                            <td style="user-select: auto; text-align: center;">
+                                <button type="button" onclick="location.href='@Url.Action("ProjectDetail", new {ProjectID = item.Value.ID })'">
+                                    <i class="fa fa-info-circle"></i>
+                                </button>
+                                <button type="button" onclick="confirm_detele(@item.Value.ID)" id="deleteMember" value="@item.Value.ID">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </td>
+                            <script>
+                            var modelSortOrder = "@Html.Raw(Model.SortOrder)";
+                            var idSort = document.getElementById("ID");
+                            if (modelSortOrder === "ID") {
+                                idSort.value = "ID_desc";
+                            }
+
+                            var idSort = document.getElementById("Name");
+                            if (modelSortOrder === "Name") {
+                                idSort.value = "Name_desc";
+                            }
+
+                            var idSort = document.getElementById("Startday");
+                            if (modelSortOrder === "Startday") {
+                                idSort.value = "Startday_desc";
+                            }
+                            var idSort = document.getElementById("Endday");
+                            if (modelSortOrder === "Endday") {
+                                idSort.value = "Endday_desc";
+                            }
+                            var idSort = document.getElementById("Type");
+                            if (modelSortOrder === "Type") {
+                                idSort.value = "Type_desc";
+                            }
+                            var idSort = document.getElementById("Unit");
+                            if (modelSortOrder === "Unit") {
+                                idSort.value = "Unit_desc";
+                            }
+                            var idSort = document.getElementById("Status");
+                            if (modelSortOrder === "Status") {
+                                idSort.value = "Status_desc";
+                    }
+
+                            </script>
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+
+        <table>
+            <tr style="font-size: 20px;">
+                <td>
+                    <a>Tổng dự án: </a>
+                    <span id="total">@Model.ItemCount</span>
+                </td>
+
+                @if (Model.PageCount > 0)
+                {
+                    <td>
+                        <a>Trang: </a>
+                        <span id="total">@Model.CurrentPage/@Model.PageCount</span>
+                    </td>
+                }
+
+                <td>
+                    <div style="float: right;">
+                        <a href="javascript:PagerClick(1);" class="page-btn"> Đầu </a>
+
+                        @if (Model.CurrentPage != 1)
+                        {
+                            <a href="javascript:PagerClick(@Model.CurrentPage - 1);" class="page-btn"> Trước </a>
+                        }
+                        else
+                        {
+                            <a class="page-btn"> Trước </a>
+                        }
+
+
+                        @{
+                            if (Model.CurrentPage <= 3)
+                            {
+                                for (int i = 1; i <= Math.Min(Model.PageCount, 5); i++)
+                                {
+                                    @if (i != Model.CurrentPage)
+                                    {
+                                        <a href="javascript:PagerClick(@i);" class="page-btn">@i</a>
+                                    }
+                                    else
+                                    {
+                                        <span style="color:#f00;" class="page-btn">@i</span>
+                                    }
+                                }
+                            }
+                            else if (Model.CurrentPage >= Model.PageCount - 2)
+                            {
+                                for (int i = Math.Max(1, Model.PageCount - 4); i <= Model.PageCount; i++)
+                                {
+                                    @if (i != Model.CurrentPage)
+                                    {
+                                        <a href="javascript:PagerClick(@i);" class="page-btn">@i</a>
+                                    }
+                                    else
+                                    {
+                                        <span style="color:#f00;" class="page-btn">@i</span>
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                for (int i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.PageCount, Model.CurrentPage + 2); i++)
+                                {
+                                    @if (i != Model.CurrentPage)
+                                    {
+                                        <a href="javascript:PagerClick(@i);" class="page-btn">@i</a>
+                                    }
+                                    else
+                                    {
+                                        <span style="color:#f00;" class="page-btn">@i</span>
+                                    }
+                                }
+                            }
+                        }
+
+
+
+
+                        @if (Model.CurrentPage != Model.PageCount)
+                        {
+                            <a href="javascript:PagerClick(@Model.CurrentPage + 1);" class="page-btn"> Sau </a>
+                        }
+                        else
+                        {
+                            <a class="page-btn"> Sau </a>
+                        }
+
+                        <a href="javascript:PagerClick(@Model.PageCount);" class="page-btn"> Cuối </a>
+
+
+                    </div>
+
+
+
+                </td>
+                <td width="120px">
+                    <a style="float: right;">
+                        <input type="number" style="width: 50px; height: 23px;" id="hfCurrentPage" name="currentPage" placeholder="1" min="1" max="@Model.PageCount" />
+                        <input type="submit" style="height: 23px;" value="Đến">
+                    </a>
+                </td>
+            </tr>
+
+        </table>
+
+    </form>
+
+    <script type="text/javascript">
+        function PagerClick(index) {
+            document.getElementById("hfCurrentPage").value = index;
+            document.forms[0].submit();
+        }
+    </script>
+
+    <style>
+        .form-submit {
+            background: transparent;
+            border: 1px solid #f5f5f5;
+            color: #fff;
+            width: 100%;
+            display: block;
+            text-transform: uppercase;
+            padding: 6px 2px;
+            transition: 0.25s ease-in-out;
+            margin-top: 30px;
+            text-decoration: none;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .form-frame {
+            position: fixed !important;
+            border-radius: 24px !important;
+            padding: 30px 30px 40px;
+            background-color: #fff;
+            box-shadow: 0px 0px 17px 2px #edcd1f;
+        }
+    </style>
+
+    @if (Model.PageCount >= 0)
+    {
+        foreach (var item in Model.Items)
+        {
+            <div style="display: none; min-width: 40%; height: 30%; left: 30%; top: 30%; z-index: 1;" class="form-frame delete-form" id="@item.ID">
+                <a style="text-align: center; color: #000;"> Bạn có chắc chắn muốn xóa dự án "@item.Name" không? </a>
+                <div>
+                    <button class="form-submit" style="color:#000; border: 1px #edcd1f solid;" onclick="location.href='@Url.Action("DeleteProject", new{ projectID = @item.ID})'" value="Có">Có</button>
+                    <button class="form-submit" onclick="confirm_delete_disabled()" style="margin-top: 15px; color:#000; border: 1px #edcd1f solid;">Không</button>
+                </div>
+            </div>
+        }
+    }
+
+
+    <script>
+        function confirm_detele(id) {
+            var subScene = document.getElementsByClassName("delete-form");
+            for (let i = 0; i < subScene.length; i++) {
+                subScene[i].style.display = "none";
+                if (subScene[i].id == id) {
+                    subScene[i].style.display = "block";
+                }
+            }
+        }
+
+
+        function confirm_delete_disabled() {
+            var subScene = document.getElementsByClassName("delete-form");
+            for (let i = 0; i < subScene.length; i++) {
+                subScene[i].style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,391 @@
+﻿@model ItemDetail<Procedure>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @section Buttons{
+        @if (Model.SessionVar == "Ban Nhân Sự")
+        {
+            <a asp-action="Account" class="header-item">Tài khoản</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if (Model.SessionVar == "Ban Đào Tạo")
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            <a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if ((Model.SessionVar == "Ban Truyền Thông") || (Model.SessionVar == "Ban Sự Kiện"))
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            //<a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if ((Model.SessionVar == "Ban Điều Hành") || (Model.SessionVar == "Ban Cố Vấn") || (Model.SessionVar == "Nhà Sáng Lập") || (Model.SessionVar == "Nhà Đồng Sáng Lập"))
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if (Model.SessionVar.Contains("PT"))
+        {
+            <a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else
+        {
+            <a class="header-item"></a>
+            //<a asp-action="Notification" class="header-item">Thông báo</a>
+            //<a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            //<a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+    }
+
+    @section Login{
+        <li class="user-info-item">
+            <a target="_blank" href="@Model.Link[1]">Lịch làm việc</a>
+        </li>
+        <li class="user-info-item">
+            <a target="_blank" href="@Model.Link[2]">Báo lỗi</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Login" asp-action="ChangetoChangePassword">Đổi mật khẩu</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Home" asp-action="Index">Đăng xuất</a>
+        </li>
+    }
+}
+
+
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/nhanSu&DuAn.css">
+    <link rel="stylesheet" href="~/css/subScene.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jodit/3.20.2/jodit.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jodit/3.20.2/jodit.min.js"></script>
+</head>
+<body>
+    @RenderBody()
+    <div class="wrap-back" style="display:flex;">
+        <a asp-action="Index"><h2 class="backMainPage"> Trang Chủ</h2></a>
+        <p>/</p>
+        <a asp-action="Procedure"><h2 style="padding-left: 10px;" class="backMainPage"> Quy trình</h2></a>
+        <p>/</p>
+        <a asp-action="ProcedureDetail"><h2 style="padding-left: 10px;" class="backMainPage"> Chi tiết quy trình</h2></a>
+    </div>
+
+    <style>
+        .text-ProcedureTitle {
+            justify-content: center;
+            font-size: 30px;
+            font-weight: 600;
+        }
+    </style>
+    <div style="display: flex; margin-bottom: 30px;" class="text-ProcedureTitle">
+        <div id="name-DuAn">@Model.Item.Name</div>
+        <input style="display: none;" class="text-ProcedureTitle" id="name-input" type="text" placeholder="Tên quy trình" value="@Model.Item.Name" name="Name" required>
+    </div>
+
+    <div class="wrap-themDuAn">
+        <div style="display: flex ;justify-content: space-between;margin: auto; width: 65vw;" class="date-DuAn">
+            <div style="display:flex" class="start">
+                <p>Thời gian cập nhật cuối: </p>
+                <div style="display:flex; margin: 16px 10px; justify-content: center;" id="wrap-date">
+                    <div id="text-date">@Model.Item.Senddate</div>
+                    <input style="display: none; height: 25px;" id="input-date" type="date" name="Sendate" value="@Model.Item.Senddate">
+                </div>
+            </div>
+
+            <div style="display:flex;" class="trangThai">
+                <p style="margin-right: 10px; font-weight: bold;">Trạng Thái: </p>
+                @try
+                {
+                    <p style="color: @Model.ColorVar[Model.Item.Status]; font-weight: bold;">@Model.Item.Status</p>
+                }
+                catch
+                {
+                    <p style="color: #4800ff; font-weight: bold;">@Model.Item.Status</p>
+                }
+            </div>
+
+        </div>
+
+        <table style="width: inherit; margin: auto; ">
+            <tr>
+                <td>
+                    <p style="font-weight: bold;">Nội Dung </p>
+                </td>
+            </tr>
+        </table>
+        <div style="width: inherit;margin: auto; ">
+            <style>
+                .text-ProcedureContent {
+                    width: 100%;
+                    height: 200px;
+                    background-color: #f5f5f5;
+                    border: 2px solid #ccc;
+                    line-height: 34px;
+                    padding: 20px 10px;
+                    overflow: scroll;
+                }
+            </style>
+            <div style="display: block;" class="text-ProcedureContent"
+                 id="text-noiDung">
+                @Html.Raw(Model.Item.Content)
+            </div>
+            <textarea name="Content" style="display: none; padding: 20px 10px; line-height: 34px; width: 100%; height: 200px; " id="input-noiDung" cols="30" rows="40" value="Nội dung">@Html.Raw(Model.Item.Content)</textarea>
+        </div>
+
+        <style>
+            .link {
+                color: #00a;
+                text-decoration: underline;
+                cursor: pointer;
+            }
+        </style>
+        <div style="display: flex; width: inherit; margin: auto;">
+            <p style="margin-right: 12px;">Link Quy Trình: </p>
+            <a style="margin: auto 0" class="link" id="text-link">@Model.Item.Link</a>
+            <script>
+                var text = document.getElementById("text-link");
+                var url = text.innerText;
+                if (!url.match(/^https?:\/\//i)) {
+                    url = 'http://' + url;
+                }
+                $("#text-link").on('click', function () {
+                    alert("Đến quy trình");
+                    window.open(url, "_blank");
+                });
+            </script>
+        </div>
+
+        <table style="width: inherit; height: auto;">
+            <tr>
+                <td width="25%">
+                    <strong>Phản hồi</strong>
+                </td>
+                <td>
+                    <strong>Nội dung</strong>
+                </td>
+            </tr>
+            @if ((Model.Item.Unit != "Ban Điều Hành"))
+            {
+                <tr>
+                    <td>
+                        <strong>Ban Điều Hành</strong>
+                    </td>
+                    <td>
+                        @Html.Raw(Model.Item.BdhReply)
+                    </td>
+                </tr>
+            }
+
+            @if ((Model.Item.Unit != "Ban Cố Vấn"))
+            {
+                <tr>
+                    <td>
+                        <strong>Ban Cố Vấn</strong>
+                    </td>
+                    <td>
+                        @Html.Raw(Model.Item.BcvReply)
+                    </td>
+                </tr>
+            }
+
+            <tr>
+                <td>
+                    <strong>Nhà Sáng Lập</strong>
+                </td>
+                <td>
+                    @Html.Raw(Model.Item.NSLReply)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <strong>Nhà Đồng Sáng Lập</strong>
+                </td>
+                <td>
+                    @Html.Raw(Model.Item.NDSLReply)
+                </td>
+            </tr>
+        </table>
+
+        <div class="" style="text-align:left; width: inherit; margin-top: 10px;">
+            <div style="float: right;">
+                <button class="add-nhanSu btn-confirm" onclick="returnProcedure()" type="button" id="Send">
+                    <i class="fa-solid fa-plus"></i>
+                    Trả lại
+                </button>
+
+                <button class="add-nhanSu btn-confirm" onclick="approvalProcedure()" type="button" id="SaveAndSend">
+                    <i class="fa-solid fa-plus"></i>
+                    Duyệt quy trình
+                </button>
+            </div>
+        </div>
+    </div>
+
+        
+
+        <form asp-action="FeedbackProcedure" asp-route-id="@Model.Item.ID" method="post" id="form">
+            <div style="display: none; width: 70%; left: 15%; top: 150px; z-index: 1;" class="form-frame" id="change-confirm">
+                <strong style="text-align: center; color: #000; font-size: 20px;">PHẢN HỒI</strong>
+                @if (Model.SessionVar == "Ban Điều Hành")
+                {
+                    <textarea name="feedback" style="width: 100%; height: 400px;" id="input-feedback" cols="30" rows="40" value="Phản hồi bởi @Model.SessionVar">@Html.Raw(Model.Item.BdhReply)</textarea>
+                }
+                else if (Model.SessionVar == "Ban Cố Vấn")
+                {
+                    <textarea name="feedback" style="width: 100%; height: 400px;" id="input-feedback" cols="30" rows="40" value="Phản hồi bởi @Model.SessionVar">@Html.Raw(Model.Item.BcvReply)</textarea>
+                }
+                else if (Model.SessionVar == "Nhà Sáng Lập")
+                {
+                    <textarea name="feedback" style="width: 100%; height: 400px;" id="input-feedback" cols="30" rows="40" value="Phản hồi bởi @Model.SessionVar">@Html.Raw(Model.Item.NSLReply)</textarea>
+                }
+                <div style="margin-top: 20px; margin-bottom: -20px; float: right;">
+                    <input type="hidden" id="IsApproval" name="IsApproval" />
+                    <button class="add-nhanSu btn-confirm" type="submit" id="Send">
+                        Gửi
+                    </button>
+                    <button class="add-nhanSu btn-confirm" onclick="subscene_disabled()" type="button">
+                        Quay lại
+                    </button>
+                </div>
+            </div>
+        </form>
+
+        <script>
+
+            function returnProcedure() {
+                document.getElementById("IsApproval").value = "n";
+                document.getElementById("change-confirm").style.display = "block";
+                const editor = Jodit.make('#input-feedback', { height: 200, autofocus: true })
+            }
+            function approvalProcedure() {
+                document.getElementById("IsApproval").value = "y";
+                document.getElementById("change-confirm").style.display = "block";
+                const editor = Jodit.make('#input-feedback', { height: 200, autofocus: true })
+            }
+
+
+            function subscene_disabled() {
+                document.getElementById("change-confirm").style.display = "none";
+            }
+
+        </script>
+
+        <script>
+            /*
+            $("#wrap-DuAn").click(function () {
+                document.getElementById("name-DuAn").style.display = 'none';
+                var input = document.getElementById("name-input");
+                input.style.display = 'block';
+                var end = input.value.length;
+                input.setSelectionRange(end, end);
+                input.focus();
+            })
+            $('#name-input').change(function () {
+                var textName = this.value;
+                console.log(textName);
+                if (textName) {
+                    document.getElementById('name-DuAn').innerText = `${textName} `;
+                }
+                else {
+                    document.getElementById('name-DuAn').innerText = `Tên Quy trình`;
+                }
+            })
+            $('#name-input').focusout(function () {
+                document.getElementById("name-DuAn").style.display = 'block';
+                document.getElementById("name-input").style.display = 'none';
+            })
+
+
+            $("#wrap-date").click(function () {
+                document.getElementById("text-date").style.display = 'none';
+                var input = document.getElementById("input-date");
+                input.style.display = 'block';
+                var end = input.value.length;
+                input.setSelectionRange(end, end);
+                input.focus();
+
+            })
+            $('#input-date').change(function () {
+                var textName = this.value;
+                console.log(textName);
+                if (textName) {
+                    document.getElementById('text-date').innerText = `${textName} `;
+                }
+            })
+            $('#input-date').focusout(function () {
+                document.getElementById("text-date").style.display = 'block';
+                document.getElementById("input-date").style.display = 'none';
+            })
+
+
+
+            $("#wrap-BDHfeedback").click(function () {
+                document.getElementById("text-BDHfeedback").style.display = 'none';
+                var input = document.getElementById("input-BDHfeedback");
+                input = Jodit.make(input, { autofocus: true })
+            })
+            $('#input-BDHfeedback').change(function () {
+                var textName = this.value;
+                if (textName) {
+                    document.getElementById('text-BDHfeedback').innerText = `${textName} `;
+                }
+                else {
+                    document.getElementById('text-BDHfeedback').innerText = `Nội dung Quy trình`;
+                }
+            })
+            $('#input-BDHfeedback').focusout(function () {
+                document.getElementById("text-BDHfeedback").style.display = 'block';
+                document.getElementById("input-BDHfeedback").style.display = 'none';
+            })
+
+            $("#wrap-link").click(function () {
+                document.getElementById("text-link").style.display = 'none';
+                var input = document.getElementById("input-link");
+                input.style.display = 'block';
+                var end = input.value.length;
+                input.setSelectionRange(end, end);
+                input.focus();
+            })
+
+
+            $('#input-link').change(function () {
+                var textName = this.value;
+                if (textName) {
+                    document.getElementById('text-link').innerText = `${textName} `;
+                }
+                else {
+                    document.getElementById('text-link').innerText = `https://www.LinkQuytrinh.com/`;
+                }
+            })
+            $('#input-link').focusout(function () {
+                document.getElementById("text-link").style.display = 'block';
+                document.getElementById("input-link").style.display = 'none';
+            })
+            */
+
+        </script>
+</body>

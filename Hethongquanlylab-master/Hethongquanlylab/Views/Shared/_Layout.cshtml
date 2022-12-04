@@ -1,0 +1,117 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="~/img/logo_icon.png" rel="shortcut icon" type="image/x-icon" />
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <link rel="stylesheet" href="~/css/layout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="/resources/demos/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@@splidejs/splide@4.0.7/dist/js/splide.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/combine/npm/@@splidejs/splide@4.0.7/dist/css/splide-core.min.css,npm/@@splidejs/splide@4.0.7/dist/css/splide.min.css">
+
+    <title>LAB THẦY SINH</title>
+</head>
+<body>
+    <div id="header" class="header">
+        <div class="header-logo">
+            <img src="~/img/logo_lab.jpg" alt="" class="logo">
+            <h3 style="text-align: center; font-size: 20px;">
+                <p>LAB THẦY SINH</p>
+            </h3>
+        </div>
+
+        <div class="header-list">
+            <div class="user">
+                <i class="fa-solid fa-user"></i>
+                <ul class="user-info">
+                    @RenderSection("Login")
+                </ul>
+            </div>
+
+            @RenderSection("Buttons")
+        </div>
+    </div>
+
+    <div style="padding-top:100px;">
+        @RenderBody()
+    </div>
+    <img src="./img/labchung.jpg" alt="" style="width:100%">
+
+    <!-- phần chân trang -->
+    <div id="footer">
+        <iframe style=" border-radius: 20px; width: 30vw;  height: 30vw;   margin:18px 0 18px -30px" <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3724.031332061914!2d105.88605751420201!3d21.03143229306462!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3135a968a2703a33%3A0x4cc579c8cf3ef157!2zMTggTmcuIDE2My8zIFAuIFTGsCDEkMOsbmgsIExvbmcgQmnDqm4sIEjDoCBO4buZaSwgVmnhu4d0IE5hbQ!5e0!3m2!1svi!2s!4v1661511004484!5m2!1svi!2s" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <!-- style=" border-radius: 20px; width: 30vw;  height: 30vw;   margin:18px 0 18px -30px" -->
+        <div class="info">
+            <p class="footer-text">Thông tin liên hệ</p>
+            <ul class="info-list">
+                <li class="info-item">
+                    <i class="fa-solid fa-phone"></i>
+                    <p>097 265 87 28</p>
+                </li>
+                <li class="info-item">
+                    <i class="fa fa-envelope" aria-hidden="true"></i>
+                    <p>labthaysinhtechmater@gmail.com</p>
+                </li>
+            </ul>
+        </div>
+
+        <div class="info">
+            <p class="footer-text">Các mạng xã hội của Lab</p>
+            <ul class="info-list">
+                <li class="info-item">
+                    <i style="color:#ff0000" class="fa-brands fa-youtube"></i>
+                    <p>
+                        <a href="https://www.youtube.com/channel/UCsZheMxcY75OSA0rJqfNXzA" target="_blank">Youtube</a>
+                    </p>
+                </li>
+                <li class="info-item">
+                    <i style="color:#097eeb" class="fa-brands fa-facebook"></i>
+                    <p>
+                        <a href="https://www.facebook.com/LabThaySinh" target="_blank">Facebook</a>
+                    </p>
+                </li>
+                <li class="info-item">
+                    <i class="fa-brands fa-tiktok"></i>
+                    <p>
+                        <a href="https://www.tiktok.com/&#64lab_thay_sinh" target="_blank">Tiktok</a>
+                    </p>
+                </li>
+                <li class="info-item">
+                    <i style="color:#c94571" class="fa-brands fa-instagram-square"></i>
+                    <p>
+                        <a href="https://www.instagram.com/lab_thay_sinh/" target="_blank">Instagram</a>
+                    </p>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+
+    </div>
+
+    <script>
+        var splide = new Splide('.splide', {
+            type: 'loop',
+            perPage: 3,
+            height: '400px',
+            width: " 100vw",
+            focus: 'center',
+            // autoWidth: true,
+            autoplay: true,
+            speed: 1000,
+            // pagination :false,
+        });
+
+        splide.mount();
+    </script>
+
+</body>
+<script src="./js/new.js"></script>
+<script src="./js/slide.js"></script>
+</html>

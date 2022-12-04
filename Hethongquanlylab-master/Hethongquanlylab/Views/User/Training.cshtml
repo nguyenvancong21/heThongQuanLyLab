@@ -1,0 +1,132 @@
+﻿@model ItemDisplay<Training>;
+@{
+    @section Buttons{
+        <a asp-action="Assignment" class="header-item">Bài tập</a>
+        <a asp-action="Training" class="header-item">Đào tạo</a>
+        <a asp-action="Infor" class="header-item">Thông tin cá nhân</a>
+        <a asp-action="Index" class="header-item">Trang chủ</a>
+    }
+
+
+    @section Login{
+        <li class="user-info-item">
+           
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Login" asp-action="ChangetoChangePassword">Đổi mật khẩu</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Home" asp-action="Index">Đăng xuất</a>
+        </li>
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="~/css/training.css">
+    <title>Document</title>
+</head>
+<body>
+    <div class="nav">
+        <a href="">
+            <i class="fa-solid fa-angle-left"></i>
+        </a>
+        <p class="nameLesson">Các bài đào tạo</p>
+        <div style="float: right;">
+            <form asp-action="Training">
+                <select style="height: 30px; width: 200px; margin-top: 10px;" name="Field" id="Field" onchange="this.form.submit()">
+                    @if (!String.IsNullOrWhiteSpace(@Model.Field))
+                    {
+                        <option value="@Model.Field">@Model.Field</option>
+                    }
+
+                    @foreach (var item in new List<string>() { "PT PTBT", "PT Lập Trình", "PT Tự động hóa & IOM", "PT Cơ khí - Cơ điện tử", "PT Quản trị doanh nghiệp & Marketing", "PT Ngoại ngữ" })
+                    {
+                        @if ((item != Model.Field))
+                        {
+                            <option value="@item">@item</option>
+                        }
+                    }
+                </select>
+            </form>
+        </div>
+
+    </div>
+
+    @if (Model.Items.Count > 0)
+    {
+        <div class="training-wrap">
+            <div style="display: flex; margin-bottom: 0px; max-height: 600px; height: 100%">
+                <div style="width: 100%; height: 100%;">
+                    <iframe style="width: 100%; height: 100%; margin: auto;" src="@Model.Items[(int)ViewData["currentTraining"]].Link" title="Bài đào tạo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                </div>
+            </div>
+            <div class="training-content" style="overflow: scroll;">
+                <style>
+                    .training-content {
+                        min-height: 400px;
+                        padding: 0 8.5%;
+                    }
+                </style>
+                <p style="font-size: 30px; font-weight:600">@Model.Items[(int)ViewData["currentTraining"]].Name</p>
+                <p style="font-style:italic">Cập nhật: @Model.Items[(int)ViewData["currentTraining"]].Date</p>
+                <p>Đơn vị: @Model.Items[(int)ViewData["currentTraining"]].Unit</p>
+                <p>@Model.Items[(int)ViewData["currentTraining"]].Content</p>
+            </div>
+
+            <style>
+                .training-wrap {
+                    bottom: 50px;
+                    left: 0;
+                    overflow-x: hidden;
+                    overscroll-behavior: contain;
+                    top: 0;
+                    width: 70%;
+                    height: 900px;
+                }
+            </style>
+        </div>
+    }
+
+    else
+    {
+        <div style="width: 60%; height: 40%; left: 20%; top: 30%; z-index: 1;" class="form-frame">
+            <a style="text-align: center; color: #000; font-size: 40px;"> Hiện chưa có bài đào tạo nào!! </a>
+        </div>
+    }
+
+    <div class="track-wraper">
+        <style>
+            .track-wraper {
+                border-left: 1px solid #e7e7e7;
+                bottom: 50px;
+                margin-top: 150px;
+                position: fixed;
+                right: 0;
+                top: 0;
+                width: 30%;
+                height: 900px;
+                display: inline-block !important;
+            }
+        </style>
+        <div id="accordion-course" style="overflow: scroll; height: auto; height: 600px;">
+            @foreach (var item in Model.Items.Select((x, i) => new { Value = x, Index = i + 1}))
+            {
+                <h3> @item.Index: @item.Value.Name</h3>
+                <h3>
+                    <button style="float: right;" class="btn-excel" type="button" onclick="location.href='@Url.Action("Training", new {field = Model.Field, TrainingID = item.Value.ID})'">Xem</button>
+                </h3>
+            }
+        </div>
+    </div>
+
+</body>
+<script>
+    $(function () {
+        $("#accordion-course").accordion({
+            collapsible: true, active: false
+        });
+    });
+</script>
+</html>

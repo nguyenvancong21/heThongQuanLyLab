@@ -1,0 +1,318 @@
+﻿@model Member;
+@{
+    @section Buttons{
+        <a>
+            <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+            <script type="text/javascript">
+                $(function () {
+                    $("#btnSubmit").click(function () {
+                        $("input[name='GridHtml']").val($("#Grid").html().replace(/</g, "StrTag").replace(/>/g, "EndTag"));
+                    });
+                });
+            </script>
+        </a>
+        <a asp-action="Assignment" class="header-item">Bài tập</a>
+        <a asp-action="Training" class="header-item">Đào tạo</a>
+        <a asp-action="Infor" class="header-item">Thông tin cá nhân</a>
+        <a asp-action="Index" class="header-item">Trang chủ</a>
+    }
+
+
+    @section Login{
+        <li class="user-info-item">
+            <a asp-controller="Login" asp-action="ChangetoChangePassword">Đổi mật khẩu</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Home" asp-action="Index">Đăng xuất</a>
+        </li>
+    }
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/header&footer.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+</head>
+<body>
+    <!-- phần CV -->
+    <div id="Grid">
+        @if (Model != null)
+        {
+            <div class="cv">
+                <div class="cv-col1">
+                    <div class="background-avt">
+                        <div class="background-avt1" style="background-color: #FCF8E0; height: 360px; width: 360px;"></div>
+                        <div class="background-avt2" style="background-color: #EDCD1F;height: 360px; width: 25%;"></div>
+                    </div>
+                    <img src="~/img/avt/@Model.Avt" alt="@Model.Avt" class="cv-avt">
+                    <div class="background-avt3">@Model.Name</div>
+                    <div class="background-avt5"></div>
+                    <div class="background-avt4">Gen: @Model.Gen</div>
+                    <div class="info-member">
+                        <style>
+                            .info-item i {
+                                width: 50px !important;
+                                font-weight: bold;
+                            }
+                        </style>
+                        <div class="info-item ">
+                            <i class="fa-regular fa-user"></i>
+                            <p>@Model.Sex</p>
+                        </div>
+                        <div class="info-item ">
+                            <i class="fa-regular fa-calendar-days"></i>
+                            <p>@Model.Birthday</p>
+                        </div>
+                        <div class="info-item ">
+                            <i class="fa-solid fa-phone"></i>
+                            <p>@Model.Phone</p>
+                        </div>
+                        <div class="info-item ">
+                            <i class="fa-solid fa-envelope"></i>
+                            <p>@Model.Email</p>
+                        </div>
+                        <div class="info-item">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <p>@Model.Address</p>
+                        </div>
+                    </div>
+
+                    <button class="btn-cv-edit" type="button" onclick="location.href='@Url.Action("EditInfor", "User", new { Key = Model.Key })'">Chỉnh Sửa Thông Tin Cá Nhân</button>
+                </div>
+                <div class="cv-col2">
+                    <div class="header-cv">
+                        <div class="header-cv-col2-1">
+                            <div class="header-cv-id">
+                                <p>ID: </p>
+                                <p>@Model.LabID</p>
+                            </div>
+                            <p>LAB THẦY SINH</p>
+                        </div>
+                        <img src="~/img/logo_lab.jpg" alt="" class="header-cv-col2-2">
+                    </div>
+
+                    <div class="cv-content">
+                        <div class="cv-col2-comment">
+                            <div class="" style="display: flex;">
+                                <h3 style="font-size: 32px;">ĐÁNH GIÁ</h3>
+                                <div class="lineYellow"></div>
+                            </div>
+                            <p>
+                                @Html.Raw(Model.Assessment)
+                            </p>
+                        </div>
+
+                        <div class="cv-col2-Education">
+                            <div class="" style="display: flex;">
+                                <h3 style="font-size: 32px;">HỌC VẤN</h3>
+                                <div class="lineYellow"></div>
+                            </div>
+                            <p>
+                                @Model.University
+                            </p>
+                            <p> Chuyên ngành: @Model.Specialization</p>
+                        </div>
+
+                        <div class="cv-col2-work">
+                            <div class="" style="display: flex;">
+                                <h3 style="font-size: 32px;">HOẠT ĐỘNG</h3>
+                                <div class="lineYellow"></div>
+                            </div>
+                            <div class="">
+                                @if (Model.IsPassPTBT)
+                                {<p>Đã vượt qua Phát triển bản thân</p>}
+                                else
+                                { <p>Chưa vượt qua Phát triển bản thân</p>}
+                                @if (Model.IsLT)
+                                {<p>Là thành viên LeaderTeam</p>}
+                                <div style="display:flex;" class="">
+                                    <p style="margin-top: 0;">Đơn Vị: @Model.Unit </p>
+                                </div>
+                                <div style="display:flex;" class="">
+                                    <p style="margin-top: 0;">Chức Vụ: @Model.Position </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="colYellow" style="word-spacing: 5px;text-align: center;"><p class="rotate" style="font-size: 11px; transform:rotate(90deg); word-spacing: 2px">@Model.LabID</p></div>
+
+                    </div>
+
+                </div>
+            </div>
+        }
+        else
+        {
+            <a style="font-size: 40px; margin-top: 10px;">THÔNG TIN CÁ NHÂN CỦA BẠN KHÔNG TỒN TẠI!!</a>
+        }
+
+        <style>
+            .header {
+                top: 0;
+            }
+
+            .cv-content .lineYellow {
+                height: 20px;
+                width: calc(100% - 20px - 150px);
+                margin: auto;
+                background-color: #edcd1f;
+            }
+
+            .cv-content .colYellow {
+                height: 100px;
+                width: 10px;
+                background-color: #edcd1f;
+                float: right;
+            }
+
+            .cv {
+                width: 75vw;
+                margin: auto;
+                margin-top: 20px;
+                display: flex;
+            }
+
+                .cv .cv-col1 {
+                    width: 360px;
+                    background: #fcf8e0;
+                }
+
+            .cv-col1 .cv-avt {
+                height: 300px;
+                width: 75%;
+                position: relative;
+                top: -340px;
+                right: -44px;
+            }
+
+            .cv-col1 .background-avt {
+                display: flex;
+                width: 100%;
+            }
+
+            .cv-col1 .background-avt3 {
+                background-color: #1E2D3B;
+                height: 100px;
+                width: calc(100% + 30px );
+                position: relative;
+                top: -330px;
+                text-align: center;
+                line-height: 100px;
+                font-size: 28px;
+                color: #fff;
+            }
+
+            .cv-col1 .background-avt4 {
+                background-color: #EDCD1F;
+                width: 100%;
+                position: relative;
+                top: -360px;
+                text-align: center;
+                line-height: 55px;
+                height: 55px;
+                font-size: 28px
+            }
+
+            .background-avt5 {
+                width: 0;
+                height: 0;
+                border-bottom: 30px solid #515f6c;
+                border-right: 30px solid transparent;
+                position: relative;
+                top: -460px;
+                right: -360px;
+            }
+
+            .cv-col1 .info-item {
+                display: flex;
+            }
+
+            .cv-col1 .info-member {
+                position: relative;
+                top: -310px;
+            }
+
+            .cv-col1 .info-item i {
+                width: 24px;
+                margin-top: auto;
+                margin-bottom: auto;
+                padding: 0 18px;
+                background-color: #edcd1f;
+                padding: 18px;
+                margin: 0 16px;
+            }
+
+            .cv-col1 .btn-cv-edit {
+                width: calc(100% - 32px);
+                margin-left: 15%;
+                padding: 12px 0px;
+                font-size: 20px;
+                background-color: #edcd1f;
+                margin-right: 0;
+                border: 0;
+                border-radius: 20px;
+                font-weight: 600;
+                position: relative;
+                top: -200px;
+                width: 70%
+            }
+
+                .cv-col1 .btn-cv-edit:hover {
+                    cursor: pointer;
+                    background-color: #e4d169;
+                }
+
+            .cv-col2 .header-cv {
+                display: flex;
+            }
+
+            .cv .cv-col2 {
+                width: auto
+            }
+
+            .cv-col2 .header-cv-id {
+                display: flex;
+                font-size: 24px;
+            }
+
+            .cv-col2 .header-cv-col2-1 > p {
+                font-size: 56px;
+                margin: 0;
+                font-weight: 600;
+                color: #001C55;
+            }
+
+            .cv-col2 .header-cv-col2-1 {
+                width: 60%;
+                margin: 0 50px;
+            }
+
+            .cv-col2 .header-cv-col2-2 {
+                width: 50%;
+                height: fit-content;
+            }
+
+            .cv-col2 .cv-content {
+                margin-left: 12%;
+            }
+
+            .cv-content h3 {
+                width: 35%;
+                color: #001c55;
+            }
+
+            .cv-content p {
+                font-size: 26px;
+                line-height: 40px;
+            }
+        </style>
+    </div>
+
+</body>
+
+</html>

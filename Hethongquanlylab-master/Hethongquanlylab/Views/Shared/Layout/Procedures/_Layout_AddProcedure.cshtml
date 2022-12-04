@@ -1,0 +1,163 @@
+﻿@model String
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @section Buttons{
+        @if (Model == "Ban Nhân Sự")
+        {
+            <a asp-action="Account" class="header-item">Tài khoản</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if (Model == "Ban Đào Tạo")
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            <a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if ((Model == "Ban Truyền Thông") || (Model == "Ban Sự Kiện"))
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            //<a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if ((Model == "Ban Điều Hành") || (Model == "Ban Cố Vấn") || (Model == "Nhà Sáng Lập") || (Model == "Nhà Đồng Sáng Lập"))
+        {
+            <a asp-action="Notification" class="header-item">Thông báo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else if (Model.Contains("PT"))
+        {
+            <a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Project" class="header-item">Dự án</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            <a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+        else
+        {
+            <a class="header-item"></a>
+            //<a asp-action="Notification" class="header-item">Thông báo</a>
+            //<a asp-action="Project" class="header-item">Dự án</a>
+            //<a asp-action="Training" class="header-item">Bài đào tạo</a>
+            <a asp-action="Procedure" class="header-item">Quy trình</a>
+            //<a asp-action="Member" class="header-item">Nhân sự</a>
+            <a asp-action="Index" class="header-item">Trang chủ</a>
+        }
+    }
+
+    @section Login{
+        <li class="user-info-item">
+            <a asp-controller="Login" asp-action="ChangetoChangePassword">Đổi mật khẩu</a>
+        </li>
+        <li class="user-info-item">
+            <a asp-controller="Home" asp-action="Index">Đăng xuất</a>
+        </li>
+    }
+}
+
+
+
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="~/css/nhanSu&DuAn.css">
+    <link rel="stylesheet" href="~/css/subScene.css">
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/jodit/3.20.2/jodit.min.css" />
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jodit/3.20.2/jodit.min.js"></script>
+</head>
+<body>
+    @RenderBody()
+    <div class="wrap-back" style="display:flex;">
+        <a asp-action="Index"><h2 class="backMainPage"> Trang Chủ</h2></a>
+        <p>/</p>
+        <a asp-action="Procedure"><h2 style="padding-left: 10px;" class="backMainPage"> Quy trình</h2></a>
+        <p>/</p>
+        <a asp-action="AddProcedure"><h2 style="padding-left: 10px;" class="backMainPage"> Thêm quy trình</h2></a>
+    </div>
+    <form asp-action="AddProcedure" method="post" id="form-addprocedure">
+        <div class="wrap-themDuAn">
+            <input name="Field" type="hidden" value="@TempData["field"]"/>
+            <label for="">
+                <strong style="font-size:20px;">Tên Quy Trình: </strong>
+                <input type="text" name="Name" value="" required>
+            </label>
+
+            <table><tr><td style="font-size: 20px; font-weight: bold; width: 100%">Mô tả quy trình:</td></tr></table>
+            <label for="">
+                <textarea style="width: 100%; margin: 12px 0; min-height: 500px;" name="Content" id="procedure_content" cols="30" rows="10" required></textarea>
+                <script>
+                    const editor = Jodit.make('#procedure_content', { height: 300 })
+                </script>
+            </label>
+
+            <label style="width: 100%; " for="">
+                <strong style="font-size:20px;">Link tài liệu: </strong>
+                <input type="url" id="input-link" name="Link" value="" required>
+            </label>
+
+            <div class="" style="text-align:left; width: inherit;">
+                <div style="float: right;">
+                    <button type="submit" class="add-nhanSu">
+                        <i class="fa-solid fa-plus"></i>
+                        Lưu
+                    </button>
+
+                    <input type="hidden" id="isSendToApproval" name="IsSendToApproval" />
+                    <button class="add-nhanSu btn-confirm" onclick="confirm_change_and_send()" type="button" id="SaveAndSend">
+                        <i class="fa-solid fa-plus"></i>
+                        Lưu và gửi duyệt
+                    </button>
+                </div>
+                </div>
+
+
+                <script>
+                    function confirm_change_and_send() {
+                        if (document.getElementById('procedure_content').value.length == 0) {
+                            alert("Chưa nhập mô tả quy trình!")
+                        }
+
+                        var urlValid = document.getElementById('input-link').checkValidity();
+                        if (urlValid) {
+                            document.getElementById("change-confirm").style.display = "block";
+                            document.getElementById("isSendToApproval").value = "y";
+                        }
+                        else {
+                            alert("Link không hợp lệ!")
+                        }
+                    }
+
+                    function confirm_change_disabled() {
+                        document.getElementById("change-confirm").style.display = "none";
+                    }
+                </script>
+            </div>
+
+        <div style="display: none; min-width: 40%; height: 30%; left: 30%; top: 30%; z-index: 1;" class="form-frame" id="change-confirm">
+            <a style="text-align: center; color: #000;"> Bạn có chắc chắn muốn gửi duyệt quy trình này không? </a>
+            <div>
+                <button class="form-submit" style="color:#000; border: 1px #edcd1f solid;" type="submit">Có</button>
+                <button class="form-submit" type="button" onclick="confirm_change_disabled()" style="margin-top: 15px; color:#000; border: 1px #edcd1f solid;">Không</button>
+            </div>
+        </div>
+    </form>
+    <script src="./js/dataNhanSu.js"></script>
+    <script src="./js/dataDuAn.js"></script>
+
+</body>
+</html>
+

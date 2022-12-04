@@ -1,0 +1,199 @@
+
+.backMainPage {
+    margin: 0;
+    color: #212121;
+    padding-top: 40px;
+    padding-left: 40px;
+    padding-bottom: 0px;
+}
+
+    .backMainPage:hover {
+        color: #f76262;
+    }
+
+.wrap-back p {
+    padding-top: 4px;
+    padding-left: 10px;
+    font-size: 32px;
+}
+
+table {
+    border-collapse: collapse;
+    width: 85vw;
+    margin: auto;
+}
+
+th {
+    height: 42px;
+}
+
+td {
+    height: 60px;
+}
+
+th, td {
+    text-align: left;
+    padding: 10px;
+}
+
+table tr:nth-child(odd) {
+    background-color: #eee;
+}
+
+table tr:nth-child(even) {
+    background-color: white;
+}
+
+table tr:nth-child(1) {
+    background-color: #373F51;
+    color: white;
+}
+
+.add-nhanSu,
+.btn-excel, btn {
+    height: 52px;
+    width: 132px;
+    background-color: #edcd1f;
+}
+
+    .add-nhanSu + .btn-excel {
+        margin-left: 34px;
+    }
+
+.wrap-button {
+    width: 85vw;
+    margin: auto;
+    text-align: right
+}
+.wrap-sreach {
+    width: 85vw;
+    margin: auto;
+    margin-bottom: 36px;
+    margin-top: 36px;
+}
+
+    .wrap-sreach input {
+        height: 30px;
+        width: 50%;
+    }
+
+    .wrap-sreach select {
+        height: 36px;
+        width: 15%;
+        margin: 0px 12px;
+    }
+
+    .wrap-sreach button {
+        width: 30%;
+        float: right;
+        height: 36px;
+    }
+
+.table-scroll {
+    overflow: scroll !important;
+    max-height: 500px;
+    margin-left: 7%;
+    width: 86vw; 
+}
+
+.wrap-totalMember {
+    width: 85vw;
+    margin: auto;
+    display: flex;
+    margin-top: 36px;
+}
+
+.totalMember {
+    font-weight: 600;
+}
+
+.edit {
+    display: none;
+}
+
+    .edit.active {
+        display: block;
+    }
+
+.overlay {
+    background-color: #ccc;
+    width: 50vw;
+    height: 50vh;
+    position: absolute;
+    top: 25vh;
+    right: 25vw;
+}
+
+button {
+    transition-duration: 0.4s;
+    border-radius: 12px;
+    background-color: #e9e9ef;
+    border: 2px;
+}
+
+    button:hover,
+    button:hover a,
+    .hover-red:hover {
+        background-color: rgb(243, 84, 116) !important;
+        color: white !important;
+        cursor: pointer;
+    }
+
+.ui-draggable .ui-dialog-titlebar {
+    background-color: rgb(251 88 88);
+    color: #fff;
+}
+/* css phần thông báo đến các pt */
+fieldset .myClass {
+    font-size: 20px;
+}
+
+.text-report {
+    margin-top: 50px;
+    margin-left: 25vw;
+    display: flex;
+    flex-direction: column;
+}
+
+label textarea {
+    width: 50vw;
+}
+
+.wrap-themDuAn {
+    width: 85vw;
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto;
+    justify-content: space-between;
+}
+
+    .wrap-themDuAn label {
+        width: 100vw;
+        flex-direction: column;
+        display: flex;
+    }
+
+        .wrap-themDuAn label input{
+            padding: 8px 24px;
+            margin: 12px 0;
+        }
+        .wrap-themDuAn label select {
+            font-size: 16px;
+            width: 40%;
+            padding: 8px 24px;
+            margin: 12px 0;
+        }
+
+.page-btn {
+    margin-left: 5px;
+    margin-right: 5px;
+    color: white;
+}
+
+    .page-btn:hover {
+        color: #fff;
+    }
+
+td a {
+    color: white;
+}
